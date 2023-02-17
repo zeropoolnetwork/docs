@@ -4,7 +4,7 @@ description: The main data structure
 
 # ZeroPool Merkle Tree
 
-`TODO: fix ![Full Merkle tree](../../../static/img/Merkle\_200dpi\_b.png)`
+![Full Merkle tree](../../../static/img/Merkle_200dpi.png)
 
 The merkle tree in the ZeroPool solution is used to link and store encrypted transaction data (accounts and notes) within a strict sequence. The accounts and note hashes are placed in the tree leaves.
 
