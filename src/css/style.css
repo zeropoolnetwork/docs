@@ -1,0 +1,385 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@500;600&family=Russo+One&display=swap');
+
+:root {
+  --bg-color-dark: #0c0f2b;
+  --font-exo: 'Exo 2', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: 1200px;
+  padding: 0 10px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -20px;
+}
+
+.header {
+  position: absolute;
+  top:0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  background-color: rgba(12, 15, 43, .5);
+}
+
+.header--static {
+  position: static;
+  height: 300px;
+  background-color: var(--bg-color-dark);
+}
+
+.header__links {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.header__links__li {
+  font-family: var(--font-exo);
+  font-weight: 600;
+  font-size: 16px;
+  padding: 0 35px;
+}
+
+.header__links__li a {
+  color: white;
+  transition: .3s ease-in-out;
+}
+.header__links__li a:hover {
+  text-decoration: none;
+  opacity: .6;
+}
+
+.header__links__li:first-child {
+  padding-left: 0;
+}
+
+.header__links__li:last-child {
+  padding-right: 0;
+}
+
+.header__menu-button {
+  display: none;
+}
+
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  height: 900px;
+  padding-top: 110px;
+  background: var(--bg-color-dark);
+  color: white;
+}
+
+.hero__img-block {
+  width: 509px;
+  height: 466px;
+  position: absolute;
+}
+
+.hero__img-block::before {
+  content: "";
+  background: url("/static/img/ZEROpool_NEW_logo_wh.png") center / contain no-repeat;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  opacity: 0.35;
+}
+
+.hero__title {
+  height: 126px;
+  font-family: 'Russo One', sans-serif;
+  font-size: 120px;
+  font-weight: 400;
+  letter-spacing: .5px;
+  margin: 93px 0 10px 0;
+}
+
+.hero__subtitle {
+  font-family: var(--font-exo);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30px;
+  margin-bottom: 230px;
+}
+
+.hero__text {
+  font-family: var(--font-exo);
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 30px;
+  opacity: .5;
+  margin-bottom: 15px;
+}
+
+.hero__buttons-block {
+  width: 560px;
+}
+
+.hero__button {
+  display: inline-block;
+  width: 100%;
+  background: transparent;
+  border: 2px solid white;
+  border-radius: 4px;
+  font-family: var(--font-exo);
+  font-size: 17px;
+  font-weight: 600;
+  text-align: center;
+  color: white;
+  padding: 16px 0;
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: ease-in-out .2s
+}
+
+.hero__button:hover {
+  background-color: white;
+  color: black;
+}
+
+.hero__button--half {
+  width: calc(50% - 20px);
+}
+
+.hero__button--half:first-child {
+  margin-right: 40px;
+}
+
+.hero__button--blue {
+  background-color: #2f4beb;
+}
+
+
+.what-is {
+  background-color: white;
+  color: black;
+  padding: 130px 0 140px 0;
+  text-align: center;
+}
+
+.what-is__img {
+  width: 60px;
+  height: 55px;
+  margin-bottom: 30px;
+}
+
+.what-is__title {
+  font-size: 38px;
+  font-family: var(--font-exo);
+  font-weight: 600;
+  margin-bottom: 75px;
+}
+
+.what-is__text {
+  font-size: 24px;
+  font-family: var(--font-exo);
+  font-weight: 500;
+  line-height: 37px;
+  max-width: 840px;
+  margin: 0 auto;
+}
+
+.what-is__text:first-child {
+  margin-bottom: 30px;
+}
+
+
+.key-tech {
+  background-color: var(--bg-color-dark);
+  padding: 130px 0 110px;
+  text-align: center;
+}
+
+.key-tech__img {
+  width: 60px;
+  height: 55px;
+  margin-bottom: 30px;
+}
+
+.key-tech__title {
+  font-size: 38px;
+  font-family: var(--font-exo);
+  font-weight: 600;
+  color: white;
+  margin-bottom: 110px;
+}
+
+.key-tech__list {}
+
+.key-tech__item-container {
+  width: 33.333%;
+  padding: 20px;
+}
+
+.key-tech__item {
+  display: flex;
+  width: 360px;
+  height: 144px;
+  border: 2px solid white;
+  border-radius: 4px;
+  box-shadow: 0 4px 24px 0 rgba(0,0,0,.5);
+  padding: 0 20px;
+}
+
+.key-tech__item-img {
+  margin: auto 18px auto 0;
+}
+
+.key-tech__item-info {
+  padding-top: 25px;
+  font-family: var(--font-exo);
+  font-weight: 600;
+  text-align: left;
+}
+
+.key-tech__item-title {
+  font-size: 32px;
+  color: white;
+  line-height: 50px;
+  margin-bottom: 0;
+}
+
+.key-tech__item-text {
+  font-size: 24px;
+  opacity: .5;
+  line-height: 26px;
+  max-width: 220px;
+}
+
+
+.our-news {
+  background-color: white;
+  color: black;
+  padding: 130px 0 85px;
+  text-align: center;
+}
+
+.our-news__img {
+  width: 60px;
+  height: 55px;
+  margin-bottom: 30px;
+}
+
+.our-news__title {
+  line-height: 38px;
+  font-family: var(--font-exo);
+  font-weight: 600;
+  font-size: 38px;
+  margin-bottom: 80px;
+}
+
+.our-news__cards {
+  flex-wrap: nowrap;
+}
+
+.our-news__card {
+  width: 33.333%;
+  padding: 20px;
+}
+
+.our-news__card-content {
+  display: block;
+  box-shadow: 0 0 12px 0 rgba(0, 0, 0, 0.30);
+  height: 100%;
+  cursor: pointer;
+  color:black;
+  text-align: left;
+  font-family: var(--font-exo);
+  padding-bottom: 17px;
+}
+
+.our-news__card-content:hover {
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.40);
+  color:black;
+  text-decoration: none;
+}
+
+.our-news__card-img {
+  margin-bottom: 15px;
+}
+
+.our-news__card-title {
+  font-size: 20px;
+  line-height: 1.35;
+  padding: 0 30px;
+  font-weight: 600;
+}
+
+.our-news__card-text {
+  font-size: 15px;
+  padding: 0 30px;
+  line-height: 1.45;
+  font-weight: 500;
+}
+
+
+.grants {
+  background-color: #fcfcfc;
+  text-align: center;
+  padding: 150px 0;
+}
+
+.grants__title {
+  font-family: var(--font-exo);
+  font-weight: 600;
+  font-size: 42px;
+  color: black;
+  margin-bottom: 110px;
+}
+
+.grants__list {
+  align-items: center;
+  justify-content: center;
+}
+
+.grants__item {
+  width: 33.333%;
+  padding: 20px;
+}
+
+
+.footer {
+  background-color: var(--bg-color-dark);
+  padding: 30px 0;
+}
+
+.footer__container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer__logo {
+  width: 84px;
+  height: 77px;
+  margin: 0;
+}
+
+.footer__social {
+  display: flex;
+  align-items: flex-end;
+}
+
+.footer__social-link {
+  margin-right: 30px;
+}
+
+.footer__social-link:last-child {
+  margin-right: 0;
+}
