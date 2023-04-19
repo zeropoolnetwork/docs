@@ -6,20 +6,20 @@ import Twitter from '/static/img/Twitter.svg'
 
 const Footer = () => {
   return (
-    <footer className="footer" id="contacts">
-      <div className="container footer__container">
-        <a className="footer__logo-link" href="/">
-          <img className="footer__logo" src={logo} alt="zeropool"/>
+    <footer className="main-footer" id="contacts">
+      <div className="container main-footer__container">
+        <a className="main-footer__logo-link" href="/">
+          <img className="main-footer__logo" src={logo} alt="zeropool"/>
         </a>
-        <div className="footer__social">
-          <a className="footer__social-link" href="https://medium.com/@ZeroPoolNetwork">
-            <Medium className="footer__social-img" />
+        <div className="main-footer__social">
+          <a className="main-footer__social-link" href="https://medium.com/@ZeroPoolNetwork">
+            <Medium className="main-footer__social-img" />
           </a>
-          <a className="footer__social-link" href="https://twitter.com/ZeroPoolNetwork">
-            <Twitter className="footer__social-img" />
+          <a className="main-footer__social-link" href="https://twitter.com/ZeroPoolNetwork">
+            <Twitter className="main-footer__social-img" />
           </a>
-          <a className="footer__social-link" href="https://t.me/ZeroPoolCommunity">
-            <Telegram className="footer__social-img" />
+          <a className="main-footer__social-link" href="https://t.me/ZeroPoolCommunity">
+            <Telegram className="main-footer__social-img" />
           </a>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 const Header = () => {
   const [showMobileNav, setShowMobileNav] = useState(false)
@@ -22,6 +23,9 @@ const Header = () => {
             </li>
             <li className="header__links__li">
               <a href="#contacts">Contact us</a>
+            </li>
+            <li className="header__links__li">
+              <Link className="header__links__li" to="/docs/intro" >Docs</Link>
             </li>
           </ul>
         </nav>

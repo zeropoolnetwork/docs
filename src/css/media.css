@@ -84,7 +84,6 @@
     align-items: center;
     padding: 80px 0 0;
     background: #0c0f2b;
-    margin-bottom: -40px;
   }
 
   .header__links__li {
@@ -125,7 +124,7 @@
 
 @media (max-width: 640px) {
   .hero {
-    height: 1000px;
+    min-height: 1000px;
   }
 
   .hero__title {
@@ -183,7 +182,7 @@
     width: 50%;
   }
 
-  .footer__logo {
+  .main-footer__logo {
     width: 50px;
     height: 45px;
   }
