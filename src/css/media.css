@@ -42,9 +42,9 @@
   .header__menu-button {
     display: block;
     position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 28px;
+    top: 26px;
+    left: 20px;
+    width: 22px;
     height: 28px;
     background: transparent;
     border: none;
@@ -52,9 +52,10 @@
   }
 
   .menu-button__line {
-    width: 27px;
-    height: 3px;
+    width: 22px;
+    height: 2px;
     background: white;
+    border-radius: 4px;
     transition: .3s;
   }
 
@@ -71,7 +72,7 @@
   }
 
   .menu-button__line--open:nth-child(1) {
-    transform: translateY(5px) rotate(45deg);
+    transform: translateY(4px) rotate(45deg);
   }
   .menu-button__line--open:nth-child(3) {
     transform: rotate(-45deg);
