@@ -1,50 +1,42 @@
-import React from 'react';
-import  { Redirect } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import Header from '../components/Header';
+import Hero from '../components/Hero'
+import WhatIs from '../components/WhatIs'
+import KeyTechnologies from '../components/KeyTechnologies'
+import OurNews from '../components/OurNews'
+import Grants from '../components/Grants'
+import Footer from '../components/Footer'
+
+import '/src/css/style.css'
+import '/src/css/media.css'
 
 export default function Home() {
-  return <Redirect to='/docs/intro' />;
-}
+  const [imgLoadSuccess, setImgLoadSuccess] = useState(false)
 
-/*
-import React from 'react';
-import clsx from 'clsx';
-import Link from '@docusaurus/Link';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import Layout from '@theme/Layout';
-import HomepageFeatures from '@site/src/components/HomepageFeatures';
+  useEffect(() => {
+    const { hash } = window.location;
+    if (hash !== '') {
+      setTimeout(() => {
+        const id = hash.replace('#', '');
+        const element = document.getElementById(id);
+        if (element) element.scrollIntoView({
+          behavior: 'smooth',
+        });
+      }, 200);
+    }
+  }, [])
 
-import styles from './index.module.css';
-
-function HomepageHeader() {
-  const {siteConfig} = useDocusaurusContext();
   return (
-    <header className={clsx('hero hero--primary', styles.heroBanner)}>
-      <div className="container">
-        <h1 className="hero__title">{siteConfig.title}</h1>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/docs/intro">
-            Docusaurus Tutorial - 5min ⏱️
-          </Link>
-        </div>
-      </div>
-    </header>
-  );
-}
-
-export default function Home() {
-  const {siteConfig} = useDocusaurusContext();
-  return (
-    <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
-      <HomepageHeader />
+    <>
+      <Header />
       <main>
-        <HomepageFeatures />
+        <Hero />
+        <WhatIs />
+        <KeyTechnologies />
+        <OurNews />
+        <Grants />
       </main>
-    </Layout>
+      <Footer />
+    </>
   );
 }
-*/
