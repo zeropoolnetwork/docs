@@ -11,12 +11,13 @@
   box-sizing: border-box;
 }
 
-.container {
+.main-container {
+  margin: 0 auto;
   max-width: 1200px;
   padding: 0 10px;
 }
 
-.row {
+.main-row {
   display: flex;
   flex-wrap: wrap;
   margin: 0 -20px;
@@ -117,6 +118,7 @@
   font-size: 20px;
   font-weight: 500;
   line-height: 30px;
+  text-align: center;
   margin-bottom: 230px;
 }
 
@@ -259,6 +261,7 @@
 
 .key-tech__item-text {
   font-size: 24px;
+  color: white;
   opacity: .5;
   line-height: 26px;
   max-width: 220px;

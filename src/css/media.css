@@ -1,9 +1,9 @@
 @media (max-width: 1200px) {
-  .container {
+  .main-container {
     max-width: 960px;
   }
 
-  .row {
+  .main-row {
     margin: 0 -10px;
   }
 

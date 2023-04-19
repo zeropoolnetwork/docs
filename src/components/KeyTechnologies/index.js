@@ -7,10 +7,10 @@ import Icon3 from '/static/img/tech-icon3.svg'
 const KeyTechnologies = () => {
   return (
     <section className="key-tech" id="technologies">
-      <div className="container">
+      <div className="main-container">
         <img className="key-tech__img" src={logo} alt="logo"/>
         <h2 className="key-tech__title">KEY TECHNOLOGIES</h2>
-        <div className="key-tech__list row">
+        <div className="key-tech__list main-row">
           <div className="key-tech__item-container">
             <div className="key-tech__item">
               <Icon1 className="key-tech__item-img"/>

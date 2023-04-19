@@ -7,9 +7,9 @@ import consensysImg from '/static/img/consensys.jpg'
 const Grants = () => {
   return (
     <section className="grants" id="partners">
-      <div className="container">
+      <div className="main-container">
         <h2 className="grants__title">GRANTS</h2>
-        <div className="grants__list row">
+        <div className="grants__list main-row">
           <div className="grants__item">
             <img className="grants__item-img" src={web3img} alt="web3"/>
           </div>

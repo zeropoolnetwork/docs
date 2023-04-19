@@ -7,7 +7,7 @@ import Twitter from '/static/img/Twitter.svg'
 const Footer = () => {
   return (
     <footer className="main-footer" id="contacts">
-      <div className="container main-footer__container">
+      <div className="main-container main-footer__container">
         <a className="main-footer__logo-link" href="/">
           <img className="main-footer__logo" src={logo} alt="zeropool"/>
         </a>

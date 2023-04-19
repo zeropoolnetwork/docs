@@ -6,10 +6,10 @@ import cardImg2 from '/static/img/news-fawkes.png'
 const OurNews = () => {
   return (
     <section className="our-news" id="news">
-      <div className="container">
+      <div className="main-container">
         <img className="our-news__img" src={logo} alt="logo"/>
         <h2 className="our-news__title">OUR NEWS</h2>
-        <div className="our-news__cards row">
+        <div className="our-news__cards main-row">
           <div className="our-news__card">
             <a href="https://medium.com/zeropool/zeropool-october-update-cd4390bf126c" className="our-news__card-content">
               <img className="our-news__card-img" src={cardImg1} alt="card-image"/>
