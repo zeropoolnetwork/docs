@@ -16,9 +16,6 @@ const Header = () => {
               <a href="#technologies">Key technologies</a>
             </li>
             <li className="header__links__li">
-              <a href="#news">Our news</a>
-            </li>
-            <li className="header__links__li">
               <a href="#partners">Our partners</a>
             </li>
             <li className="header__links__li">

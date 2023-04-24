@@ -58,11 +58,6 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       navbar: {
-        // title: 'ZeroPool',
-        // logo: {
-        //   alt: 'ZeroPool Logo',
-        //   src: 'img/logo-white.svg',
-        // },
         items: [
           {
             href: '/',
@@ -73,11 +68,6 @@ const config = {
             href: '/#technologies',
             position: 'left',
             label: 'Key technologies',
-          },
-          {
-            href: '/#news',
-            position: 'left',
-            label: 'Our news',
           },
           {
             href: '/#partners',
@@ -95,11 +85,6 @@ const config = {
             position: 'left',
             label: 'Docs',
           },
-          // {
-          //   href: 'https://github.com/zeropoolnetwork/docs',
-          //   label: 'GitHub',
-          //   position: 'right',
-          // },
         ],
       },
       footer: {

@@ -80,11 +80,18 @@
 .hero {
   display: flex;
   flex-direction: column;
-  min-height: 900px;
+  justify-content: center;
+  min-height: 1000px;
   height: 100vh;
   padding-top: 110px;
   background: var(--bg-color-dark);
   color: white;
+}
+
+.hero__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .hero__img-block {
@@ -234,11 +241,12 @@
 .key-tech__item {
   display: flex;
   width: 360px;
-  height: 144px;
+  min-height: 144px;
+  height: 100%;
   border: 2px solid white;
   border-radius: 4px;
   box-shadow: 0 4px 24px 0 rgba(0,0,0,.5);
-  padding: 0 20px;
+  padding: 10px 20px;
 }
 
 .key-tech__item-img {
@@ -246,7 +254,9 @@
 }
 
 .key-tech__item-info {
-  padding-top: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   font-family: var(--font-exo);
   font-weight: 600;
   text-align: left;
@@ -381,9 +391,14 @@
 }
 
 .main-footer__social-link {
-  margin-right: 30px;
+  margin-right: 15px;
 }
 
 .main-footer__social-link:last-child {
   margin-right: 0;
+}
+
+.main-footer__social-img {
+  width: 44px;
+  height: 44px;
 }

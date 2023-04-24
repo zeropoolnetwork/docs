@@ -211,8 +211,17 @@
     max-width: 280px;
   }
 
+  .key-tech__list {
+    margin: 0 -10px;
+  }
+
   .key-tech__item {
     width: 280px;
     line-height: 26px;
+  }
+
+  .key-tech__item-title {
+    line-height: 30px;
+    margin-bottom: 10px;
   }
 }
