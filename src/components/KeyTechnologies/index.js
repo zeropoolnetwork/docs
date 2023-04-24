@@ -33,8 +33,8 @@ const KeyTechnologies = () => {
             <div className="key-tech__item">
               <Icon3 className="key-tech__item-img"/>
               <div className="key-tech__item-info">
-                <h3 className="key-tech__item-title">Tor</h3>
-                <div className="key-tech__item-text">for network identity hiding</div>
+                <h3 className="key-tech__item-title">Fawkes-Crypto</h3>
+                <div className="key-tech__item-text">API for building provable computations</div>
               </div>
             </div>
           </div>
