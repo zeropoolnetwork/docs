@@ -19,7 +19,6 @@ const Hero = () => {
               WAVES Testnet
             </a>
           </div>
-          <!--<a href="https://gitcoin.co/grants/172/zeropool" className="hero__button hero__button--blue">Support us on Gitcoin!</a>-->
           <a href="https://explorer.gitcoin.co/#/round/1/0x274554eb289004e15a7679123901b7f070dda0fa/0x274554eb289004e15a7679123901b7f070dda0fa-3" className="hero__button hero__button--blue">Support us on Gitcoin!</a>
         </div>
       </div>
