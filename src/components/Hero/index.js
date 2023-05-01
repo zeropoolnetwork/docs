@@ -9,7 +9,7 @@ const Hero = () => {
         <div className="hero__subtitle">PRIVACY SOLUTION FOR BLOCKCHAIN</div>
         <div className="hero__text">Low transaction fees, atomic swaps and common anonymity set</div>
         <div className="hero__buttons-block">
-          <a href="https://testnet.app.zeropool.network/" className="hero__button">Goerli Ethereum Testnet</a>
+          <a href="https://testnet.app.zeropool.network/" className="hero__button">Sepolia Ethereum Testnet</a>
           <a href="https://near.testnet.frontend.v2.zeropool.network/" className="hero__button">NEAR Testnet</a>
           <div>
             <a href="https://substrate.testnet.console.v2.zeropool.network/" className="hero__button hero__button--half">
