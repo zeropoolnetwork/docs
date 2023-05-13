@@ -36,10 +36,16 @@ guarranteed to be short (succinct) — much smaller than the amount of operation
 that $C$ performs. Usually the $\texttt{proof}$ is also very easy to verify,
 even easier than computing the predicate $C$.
 
+:::info
+
 In reality, the $\texttt{prove}$ and $\texttt{verify}$ take more parameters
 that carry setup data (which may depend on the predicate $C$ or not). We omit
 the setup parameters in this section for simplicity, but we will come back to
 them when we look at concrete code examples for proving and verifying proofs.
+
+:::
+
+:::tip
 
 The definition of zkSNARK we presented above requires the computation $C$ that
 is being verified to be a predicate, but this definition is robust enough to
@@ -63,6 +69,8 @@ $$
 
 to the Verifier who can check that the $y$ is indeed the correct output of $F$
 by doing $\texttt{verify}(C, (\texttt{pub}, y), \texttt{proof})$.
+
+:::
 
 What makes zkSNARKs useful for Blockchain? Whole state of the Blockchain
 is public, and each update to made to it is completely transparent for any
@@ -94,6 +102,8 @@ has gates and wires connecting them. Each wire has a value associated with it,
 and each gate transforms the values on its input wires into the value of its
 output wire.
 
+:::tip
+
 The standard way to translate a circuit into its corresponding CS is to assign
 a CS variable to each of the circuit's wires and then add a CS constraint for
 each of the circuit gates ensuring that the inputs and outputs are related
@@ -117,6 +127,8 @@ $$
 
 The $\texttt{in}$ and $w$ in these expressions are variables the values of
 which can be assigned by $\texttt{pub}$ or $\texttt{sec}$.
+
+:::
 
 Circuits are a convenient model that allows one to express nested functional
 dependencies between the variables of a CS. Once you've produced such
@@ -150,11 +162,15 @@ F(\texttt{pub}, \texttt{sec})$). By using one circuit description for all
 these tasks, we reduce boilerplate and help implement a zkSNARK application
 correctly.
 
+:::info
+
 What fawkes-crypto provides is called Embedded Domain Specific
 Language (EDSL) as opposed to regular DSLs for zkSNARKs like
 [Circom](https://github.com/iden3/circom), because it is embedded as an API
 in it host language, Rust. This allows for seamless integration between the
 target Rust app that's using a zkSNARK and the circuit implementation.
+
+:::
 
 Another benefit of an abstract EDSL for describing circuits is that one can use
 the same circuit description written in Fawkes-crypto with multiple different

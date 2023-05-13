@@ -40,9 +40,14 @@ pub fn circuit<C: CS>(public: CNum<C>, secret: (CNum<C>, CNum<C>)) {
 ```
 
 Here, we take one public `CNum` and two private ones and we enforce that public
-`CNum` equals the product of the two secret ones. Note how we just declared
-`public` as `CNum` and `secret` as a pair of `CNum`s, this is ok because both
-types implement `Signal` trait.
+`CNum` equals the product of the two secret ones.
+
+:::tip
+
+We just declared `public` as `CNum` and `secret` as a pair of `CNum`s, this is
+ok because both types implement `Signal` trait.
+
+:::
 
 We're done with building a circuit and we can prove and verify it via the
 standard API calls `setup`, `prove` and `verify` that we've shown in the
@@ -130,7 +135,11 @@ fn c_fibonacci<C: CS, const N: usize>(n: &CNum<C>) -> CNum<C> {
 This circuit takes an argument `n: CNum<C>` and returns `n`th Fibonacci
 number. The constant `N` specifies the maximum possible value of `n`. The
 circuit does `N` Fibonacci iterations and then picks the result of `n`th among
-them. Some interesting combinators that we used here are:
+them.
+
+:::info
+
+Some interesting combinators that we used here are:
 
  - `n.derive_const(…)` creates a constant in the CS to which `n` belongs. Under
    the hood, it follows the smart reference to CS stored in `n` and calls the
@@ -140,11 +149,18 @@ them. Some interesting combinators that we used here are:
    operator in C/C++). If `cond` is 1, it will produce `a` (“then” branch), and
    `res` if `cond` is 0 (“else” branch).
 
+:::
+
+:::info
+
 We can't do less than `N` iterations when building the circuit here, since we
 don't know what value `n` we will get on input when it gets evaluated. When we
 build the circuit, we must describe the fixed structure of computations that
-will work for all inputs that we handle. (Self-check question: what will this
-circuit produce when `n > N`?)
+will work for all inputs that we handle.
+
+Self-check question: what will this circuit produce when `n > N`?
+
+:::
 
 Then we convert the circuit to predicate $C(\texttt{pub}, \texttt{sec})$ which
 checks that $F(\texttt{pub}) = \texttt{sec}$.

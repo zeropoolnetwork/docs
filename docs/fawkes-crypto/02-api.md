@@ -9,10 +9,16 @@ common principles and then we dive into the concrete code examples of using
 each in the later sections.
 
 Fawkes-crypto API uses the following vocabulary for describing Constraint
-Systems. The code examples we give here are have some technicalities (like
-borrowing and wrapper types) simplified in them to convey the intuition — this
-is best read as pseudocode. We will look at the formally correct, runnable
-examples in the next sections.
+Systems.
+
+:::caution
+
+The code examples we give here are have some technicalities (like borrowing and
+wrapper types) simplified in them to convey the intuition — this is best read
+as pseudocode. We will look at the formally correct, runnable examples in the
+next sections.
+
+:::
 
  - `trait CS` describes the whole Constraint System. It has methods for
     allocating new variables in $\texttt{pub}$ and $\texttt{sec}$ as well as
@@ -121,9 +127,13 @@ of `CNum` or `CBool`. The `circuit` doesn't accept the `cs: BuildCS<Fr>`
 itself, because `Signal<_>` values store smart reference to the CS value they
 correspond to. Both `pub` and `sec` must, of course, belong to the same CS.
 
-Note that `pub` and `sec` here can have different types. For example, you could
-make `pub: (CNum<_>, CNum<_>)` and `sec: (CNum<_>, CNum<_>, CNum<_>)` to have 2
+:::tip
+
+The `pub` and `sec` here can have different types. For example, you could make
+`pub: (CNum<_>, CNum<_>)` and `sec: (CNum<_>, CNum<_>, CNum<_>)` to have 2
 public inputs and 3 secret ones.
+
+:::
 
 To verify a circuit using Plonk constraints (Halo2 backend with KZG10
 commitments), one does the following steps.
@@ -149,9 +159,13 @@ commitments), one does the following steps.
    let (vk, pk) = setup(&parameters, circuit);
    ```
 
+   :::caution
+
    This step is also called trusted setup. It must be executed either by a
-   trusted third party or in a Secure Multi-Party Computation protocol, not by
-   Prover or Verifier.
+   trusted third party or in a Secure Multi-Party Computation protocol, Prover
+   and Verifier must not see the intermediate values from `setup` computation.
+
+   :::
 
 2. Generate the proof. This step is done by the Prover using the public inputs
    `pub` and secret input `sec`.
@@ -189,6 +203,18 @@ commitments), one does the following steps.
    ```
 
    This uses `proof` and `inputs` that Verifier got from the Prover.
+
+   :::caution
+
+   Depending on the application, the Verifier may need to perform some checks
+   on `inputs` value before using it in `verify`. For example, make sure that
+   $\texttt{pub}$ values included in `inputs` are the ones that Verifier
+   expects.
+
+   This is highly application specific, therefore we don't show this in code
+   above.
+
+   :::
 
 Both `setup` and `prove` will call the `circuit` function that you pass to them
 to build the circuit and extract the information they need from it.
@@ -230,6 +256,15 @@ To have your `circuit` proven, you perform the following steps.
    use fawkes_crypto::backend::bellman_groth16::verifier;
    let res = verifier::verify(&params.get_vk(), &snark_proof, &inputs);
    ```
+
+:::caution
+
+Like in Plonk which we describe in the previous section, `setup` from step 1
+shown above must be performed by a trusted party. Neither Prover nor Verifier
+should be allowed to tamper with it. And in step 3, Verifier must validate the
+contents of `inputs` (application-dependent).
+
+:::
 
 The API for R1CS constraints is quite similar to Plonk. The main differences
 are:

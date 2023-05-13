@@ -1,4 +1,4 @@
-# Introduction
+# Fawkes-crypto Library
 
 [Fawkes Crypto](https://github.com/zeropoolnetwork/fawkes-crypto) library
 provides a lightweight Rust EDSL (Embedded Domain Specific Language) for
