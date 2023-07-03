@@ -6,7 +6,7 @@ account inside ZeroPool, transfer them to other private accounts inside the
 pool, and withdraw them back to a public account. Deposits to and withdrawals
 from the pool are visible to everyone — since they alter account balances on
 the underlying public blockchain — while the transactions inside the pool, as
-well as the balances, and the structures of private accounts are hidden from
+well as the balances, and the structure of private accounts are hidden from
 everyone but the corresponding account owners.
 
 The core tool that allows ZeroPool to provide privacy on a public blockchain is
