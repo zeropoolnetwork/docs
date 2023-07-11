@@ -1,14 +1,11 @@
 .PHONY: all
 
-all: merkle-tree-illustration.svg
+all: merkle-tree-illustration.png
 
 .SECONDARY:
 
-%.svg: %/main.svg
+%.png: %/main.png
 	cp $^ $@
 
-%/main.svg: %/main.pdf
-	pdf2svg $^ $@
-
-%/main.pdf: %/main.tex
-	cd $$(dirname "$@") && latexmk
+%/main.png: %/main.tex
+	cd $$(dirname "$^") && lualatex --shell-escape main.tex

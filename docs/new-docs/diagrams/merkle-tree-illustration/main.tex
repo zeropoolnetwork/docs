@@ -1,18 +1,23 @@
-\documentclass[tikz]{standalone}
+\documentclass[tikz,convert={outfile=\jobname.png}]{standalone}
+\usepackage{xcolor}
 \usetikzlibrary{graphs,graphdrawing,arrows.meta}
 \usegdlibrary{trees}
 \begin{document}
-\begin{tikzpicture}[>=Stealth]
+\begin{tikzpicture}[
+  >=Stealth,
+  pth/.style={draw,rectangle,fill=green},
+  prf/.style={draw,rectangle,dashed,fill=yellow!20},
+]
 \graph[binary tree layout]{
-  3cf03f -> {   
-    5e7bce -> { 
-      3d3106 -> { 
+  3cf03f[pth] -> {   
+    5e7bce[pth] -> { 
+      3d3106[prf] -> { 
         c52280,
         87428f,
       }, 
-    e07bbd -> { e47509, 6631e5 }
+    e07bbd[pth] -> { e47509[prf], 6631e5[pth] }
     },
-    7a0fde -> {
+    7a0fde[prf] -> {
       60c4cf -> {
         25c725,
         026382,
