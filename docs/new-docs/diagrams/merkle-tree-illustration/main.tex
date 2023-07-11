@@ -1,0 +1,28 @@
+\documentclass[tikz]{standalone}
+\usetikzlibrary{graphs,graphdrawing,arrows.meta}
+\usegdlibrary{trees}
+\begin{document}
+\begin{tikzpicture}[>=Stealth]
+\graph[binary tree layout]{
+  3cf03f -> {   
+    5e7bce -> { 
+      3d3106 -> { 
+        c52280,
+        87428f,
+      }, 
+    e07bbd -> { e47509, 6631e5 }
+    },
+    7a0fde -> {
+      60c4cf -> {
+        25c725,
+        026382,
+      }, 
+      9989b6 -> {
+        fd954f,
+        72baaf,
+      }
+    }
+  }
+};
+\end{tikzpicture}
+\end{document}
