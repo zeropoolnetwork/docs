@@ -18,7 +18,7 @@ allows efficiently revealing part of the commited values, recalculating the
 commitment when the values change.
 
 Leaves in a Merkle tree contain hashes of the commited values. And each inner
-(that is, non-leaf) node contains the hash of its children.
+(that is, non-leaf) node contains the hash of its two children.
 
 ![Merkle tree illustration](diagrams/merkle-tree-illustration.png)
 
@@ -30,8 +30,11 @@ the root `3cf03f`, but you don't know the whole tree.
    "left, right, right" that leads to that leaf from the root through the
    green nodes), as well as the hashes of all the nodes (highlighted in green
    and light yellow), you can verify that the leaf is indeed holding the
-   value `6631e5`. Note that you needed to see only $O(\log n)$ hash values to
-   verify this, and you didn't have to know all $n$ tree nodes.
+   value `6631e5`. You do that by recalculating the hashes of all the nodes
+   along the path and, finally, verifying that the path starts with the
+   expected root hash. Note that you needed to see only $O(\log n)$ hash
+   values to verify this, and you didn't have to know all $n$ tree nodes for
+   this.
 
    The path (sequence of left-right turns) to a node in a Merkle tree together
    with the hash values of the nodes encountered on the way is called **Merkle
@@ -46,8 +49,8 @@ the root `3cf03f`, but you don't know the whole tree.
    3. the Merkle proof of the leaf in the new tree;
 
    using this information you can verify that the proofs are correct, and check
-   that the unmodified nodes are the same in both proofs (ensuring that exactly
-   one leaf was modified).
+   that the unmodified nodes (yellow on the picture) are the same in both
+   proofs (ensuring that exactly one leaf was modified).
 
    This also works with non-leaf nodes. In this case, the modification replaces
    the subtree rooted in the corresponding inner node.
