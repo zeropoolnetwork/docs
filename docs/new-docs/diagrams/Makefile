@@ -1,6 +1,8 @@
 .PHONY: all
 
-all: merkle-tree-illustration.png
+all: \
+	merkle-tree-illustration.png \
+	transaction-acting-on-a-list.png
 
 .SECONDARY:
 
