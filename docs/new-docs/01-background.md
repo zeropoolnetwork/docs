@@ -17,8 +17,9 @@ Merkle tree is a mechanism for cryptographically commiting to some values. It
 allows efficiently revealing part of the commited values, recalculating the
 commitment when the values change.
 
-Leaves in a Merkle tree contain hashes of the commited values. And each inner
-(that is, non-leaf) node contains the hash of its two children.
+Leaves in a Merkle tree contain hashes of the commited values $v_0$ …
+$v_{n-1}$. And each inner (that is, non-leaf) node contains the hash of its two
+children.
 
 ![Merkle tree illustration](diagrams/merkle-tree-illustration.png)
 
@@ -32,9 +33,8 @@ the root `3cf03f`, but you don't know the whole tree.
    and light yellow), you can verify that the leaf is indeed holding the
    value `6631e5`. You do that by recalculating the hashes of all the nodes
    along the path and, finally, verifying that the path starts with the
-   expected root hash. Note that you needed to see only $O(\log n)$ hash
-   values to verify this, and you didn't have to know all $n$ tree nodes for
-   this.
+   expected root hash. Note that you needed to see only $O(\log n)$ hash values
+   to verify this, and you didn't have to know all $O(n)$ tree nodes for this.
 
    The path (sequence of left-right turns) to a node in a Merkle tree together
    with the hash values of the nodes encountered on the way is called **Merkle
