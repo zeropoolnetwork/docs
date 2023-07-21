@@ -41,8 +41,8 @@
        \draw[->,out=-90,in=90] (interm) to (address);
 
     \node[fit=(spending)(interm),pinnedBox={30}{Private, genedated once per user}] {};
-    \node[fit=(recieving)(outgoing),pinnedBox={200}{Freshly sampled for each transaction}] {};
-    \node[fit=(address),pinnedBox={-70}{Freshly sampled on demand, can't be tracked back to user's identity}] {};
+    \node[fit=(recieving)(outgoing),pinnedBox={-110}{Freshly sampled for each transaction}] {};
+    \node[fit=(address),pinnedBox={-70}{Freshly sampled on demand, hides user's identity $\sigma$}] {};
   \end{tikzpicture}
 
   % \noindent
