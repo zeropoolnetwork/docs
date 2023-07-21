@@ -1,4 +1,4 @@
-# Overview
+# Functionality
 
 Every user in ZeroPool is associated with her private spending key
 $\sigma$.

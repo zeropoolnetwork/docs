@@ -1,4 +1,4 @@
-# Transaction
+# Transaction Overview
 
 As mentioned in [Overview](overview), ZeroPool encodes all possible actions a
 user may want to perform on the pool with a single transaction type. A ZeroPool
@@ -68,7 +68,7 @@ separate sequences merged together, one for accounts and one for notes.
 
 :::
 
-### Account
+### Account Structure
 
 An Account in ZeroPool is described by four fields:
 
@@ -99,7 +99,7 @@ Alice's account has no effect on the notes that she can join with that account,
 i.e. the joined notes can go either before of after the account (green box on
 the picture).
 
-### Note
+### Note Structure
 
 A Note in ZeroPool is described by the following three fields:
 
@@ -114,8 +114,84 @@ owned by. The values $d$ and $P_d$ are derived from $\eta$, but don't reveal
 $\eta$ itself. In order to join a note, the user must provide the value $\eta$
 and an account (belonging to $\eta$) to join the note with.
 
+:::info
+
+**TODO: What's written here is inaccurate. It's not zero hashes, it's all fields
+being set to 0 make accounts and notes behave in a special way.**
+
+In practice, a lot of the time we will be working with hashes of account
+and note structures. Hash values equal to zero have special meaning in
+ZeroPool.
+
+- Special zero account is used to create new accounts: zero account has $0$
+  balance, no notes are associated with it and it can be spent multiple times
+  with any spending key $\sigma$. If you want to create a new account, you
+  "spend" the zero account with your freshly sampled key $\sigma$, and after
+  that you can start using your new account in future transactions.
+
+- Zero note hash means "do not use this note". Since the number of `INPUT` and
+  `OUTPUT` notes transaction works on is fixed (to avoid privacy leakage), we
+  need a way to encode dummy notes that are not to be used if the user wants to
+  use less of them, and zero note hashes do just that.
+
+Due to collision resistance, we're extremely unlikely to ever encounter account
+or note values that will actually hash to zero. Therefore, it's safe to treat
+zero hashes as special values.
+
+:::
+
 ## Merkle Tree Commitment
 
 ZeroPool smart-contract does not store the whole sequence of nodes and
-accounts, but instead only holds the (publicly known) commitment to it. We use
-Merkle Tree
+accounts, but instead only holds the (publicly known) commitment to it. We
+use Merkle Tree to commit to the whole sequence of accounts and notes, and
+incrementally append values to it.
+
+Consider a Merkle Tree of height $h$. To store the sequence $s_0, s_1 \dots
+s_{n-1}$ of accounts and notes in it, we assign first (going from left to
+right) $n$ leaves of the tree hashes $H(s_0), H(s_1) \dots H(s_{n-1})$ and fill
+the remaining $2^h - n$ leaves with zeroes. And we compute the values of all
+inner nodes according to the usual Merkle Tree rule. (If no transactions have
+happened yet and the sequence is empty, all leaves of the Merkle Tree will be
+initialized with zeroes.)
+
+This way, for any sequence element $s_k$, its index $k$ can be naturally
+interpreted as the path to the leaf where $H(s_k)$ is stored: decompose number
+$k$ into $h$ bits and treat $0$s and $1$s in it as a sequence of "left" and
+"right" turns leading from the tree root to a leaf. One can also efficiently
+recompute the Merkle Tree if some leaf is modified, or even multiple leaves in
+bulk by updating a subtree. We've covered this in [Background](background).
+
+Even though Merkle Tree allows modifying any leaf, including the ones we've
+assigned before, we only use this functionality to append values to the
+sequence and never modify elements that were added to it before. Say, if the
+Merkle Tree leaves currently currently have values
+
+$$
+H(s_0), H(s_1) \dots H(s_{n-1}), 0, 0 \dots 0
+$$
+
+assigned to them, the only modification we will do is assigning value
+$H(s_{n})$ to leaf $n$.
+
+Using Merkle Tree commitment to implement a sequence of accounts and notes in
+ZeroPool means that the total length of the sequence can never exceed $2^h$.
+
+## zkSNARK Constraint Systems
+
+**TODO: Where to introduce nullifiers?**
+
+The global state maintained by the ZeroPool smart-contract is given by the root
+hash of Merkle Tree containing accounts and notes sequence. The smart-contract
+allows anyone to replace the root it stores with a new value only if the
+sequence commited to by the new root is obtained from the old one by applying a
+valid transaction to it.
+
+TODO: Introduce zkSNARK CSes.
+
+The public inputs of CSes are:
+
+ - root
+ - nullifier
+ - out_commit
+ - delta
