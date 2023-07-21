@@ -1,6 +1,7 @@
 .PHONY: all
 
 all: \
+	zeropool-keys.png \
 	merkle-tree-illustration.png \
 	transaction-acting-on-a-list.png
 

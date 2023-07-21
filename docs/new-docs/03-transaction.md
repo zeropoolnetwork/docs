@@ -21,6 +21,10 @@ instantiations of the same account, and transaction as modifying this account
 
 :::
 
+## Keys
+
+![ZeroPool Keys Diagram](diagrams/zeropool-keys.png)
+
 ## Sequence of Accounts and Notes
 
 ZeroPool organizes all accounts and notes in a long, evergrowing sequence. Each
@@ -49,7 +53,7 @@ and three new notes which will belong to the recepient accounts.
 The ordering of notes that Alice's transation consumes with respect to her
 account is not important, i.e. the consumed notes can be located both to the
 left or to the right of the account in the sequence. But with respect to each
-other the notes are always consumed in the order in which they appear in the
+other, the notes are always consumed in the order in which they appear in the
 sequence. If you own notes X, Y, Z that go in this order and you decide to
 consume only X and Z, ZeroPool will treat Y as consumed too and forever lock
 the tokens it's holding. Alice's account associated with her spending key
@@ -64,6 +68,12 @@ separate sequences merged together, one for accounts and one for notes.
 
 :::
 
-## Embedding Sequence in Merkle Tree
+### Account
 
-We use Merkle Tree to maintain the state of accounts and notes sequence
+### Note
+
+## Merkle Tree Commitment
+
+ZeroPool smart-contract does not store the whole sequence of nodes and
+accounts, but instead only holds the (publicly known) commitment to it. We use
+Merkle Tree
