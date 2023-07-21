@@ -70,7 +70,49 @@ separate sequences merged together, one for accounts and one for notes.
 
 ### Account
 
+An Account in ZeroPool is described by four fields:
+
+1. Intermediate key $\eta$ of the account's owner.
+2. Spent offset $i$.
+3. Balance $b$, the amount of tokens that the account holds.
+4. Random salt $t$.
+
+The $\eta$ here binds the account to is owner. Balance $b$ tells how many
+tokens the note is holding. And random salt $t$ is there just to make sure
+that hash of the account doesn't reveal anything about the fields.
+
+The field $i$ is pointing at some position in the sequence of accounts and
+notes. All the notes belonging to this account that are located to the left
+of $i$ are considered joined (spent), and the ones in position $i$ and to the
+right of it are available for spending.
+
+![Account spent offset](diagrams/account-spent-offset.png)
+
+The picture above illustrates the meaning of spent offset. White accounts
+and notes here stand for ones that belong to users other than Alice.
+
+When Alice performs a transaction joining some notes, she will change the
+spent offser of her account from old value $i$ to new $i'$. And during that
+transaction, she can join the notes that are located between indices $i$ and
+$i'$ in the sequence (thus maintaining the invariant). The current position of
+Alice's account has no effect on the notes that she can join with that account,
+i.e. the joined notes can go either before of after the account (green box on
+the picture).
+
 ### Note
+
+A Note in ZeroPool is described by the following three fields:
+
+1. $(d, P_d)$, diversified public address this note belongs to.
+2. Balance $b$.
+3. Random salt $t$.
+
+Balance $b$ and salt $t$ here have the same meaning as in account.
+
+The diversified public address $(d, P_d)$ is binding a note to the account it's
+owned by. The values $d$ and $P_d$ are derived from $\eta$, but don't reveal
+$\eta$ itself. In order to join a note, the user must provide the value $\eta$
+and an account (belonging to $\eta$) to join the note with.
 
 ## Merkle Tree Commitment
 

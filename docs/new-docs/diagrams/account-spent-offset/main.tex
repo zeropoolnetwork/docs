@@ -1,0 +1,85 @@
+\documentclass[convert={outfile=\jobname.png}]{standalone}
+\usepackage{varwidth}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{tikz-cd}
+\usetikzlibrary{graphs,graphdrawing,arrows.meta}
+\usetikzlibrary{arrows.meta, positioning, quotes, calc, backgrounds, decorations.pathreplacing}
+\usetikzlibrary{patterns,patterns.meta}
+\usetikzlibrary{cd}
+\usetikzlibrary{fit}
+\tikzset
+  { filled/.style={fill=white},
+    account/.style={draw,rectangle,minimum size=6mm,inner sep=2mm},
+    note/.style={draw,circle,minimum size=2mm},
+    spentMarker/.style={pattern=north east lines,pattern color=gray},
+    boxAround/.style={
+      rectangle,draw,dotted,rounded corners=0.2cm,inner sep=3mm,outer sep=1mm,
+    },
+  }
+% \tikzcdset{column sep/normal=0.2cm}
+\begin{document}
+  \begin{tikzcd}[
+    % row sep=normal,
+    column sep=4mm,
+    ampersand replacement=\&,
+    nodes in empty cells,
+    execute at end picture={
+      \begin{scope}[on background layer]
+        % \node[below right=2cm and 0.1cm of consumedTwo,text width=3cm] (consumedCaption) {
+     %        Joined before, can not be spent again
+        % };
+        %   \draw[-,in=-80,out=180] (consumedCaption) to (consumedOne);
+        %   \draw[-,in=-80,out=110] (consumedCaption) to (consumedTwo);
+        %   \draw[-,in=-90,out=90] (consumedCaption) to (consumedThree);
+        \node[fit=(consumedOne),spentMarker] {};
+        \node[fit=(consumedTwo),spentMarker] {};
+        \node[fit=(consumedThree),spentMarker] {};
+        \node[above left=2cm and 0cm of spentOffset] (spentOffsetCaption) {
+          $\textsf{\colorbox{green}{account}}.i$
+        };
+        \node[above=2cm of aliceAccount] (aliceAccountCaption) {
+          Alice's $\textsf{\colorbox{green}{account}}$
+        };
+          \draw[->,in=90,out=0] (spentOffsetCaption) to (spentOffset);
+          \draw[-,in=90,out=-90] (aliceAccountCaption) to (aliceAccount);
+        %
+        \node[fit=(leftInf)(consumedThree),boxAround,pin={[text width=4cm,font=\normalsize]-90:{
+          Alice's notes here are already joined, and can not be spent again
+        }}] (boxLeft) {};
+        \node[fit=(unconsumedOne)(rightInf),boxAround,pin={[text width=4cm,font=\normalsize]-90:{
+          Alice's notes here are available for joining
+        }}] (boxRight) {};
+        %
+        \node[fill=white,opacity=1,draw=white,rectangle,minimum height=1.5cm,minimum width=0.5cm,left=1mm of leftInf] () {};
+        \node[fill=white,opacity=1,draw=white,rectangle,minimum height=1.5cm,minimum width=0.5cm,right=1mm of rightInf] () {};
+      \end{scope}
+    }
+    ]
+    % |[alias=a,note]| \&
+    |[alias=leftInf]| \dots \&
+    |[account]| \&
+    |[note,fill=green,alias=consumedOne]| \&
+    |[note]| \&
+    |[note,fill=green,alias=consumedTwo]| \&
+    |[account]| \&
+    |[note,fill=green,alias=consumedThree]| \&
+    |[note,alias=spentOffset]| \&
+    |[note,fill=green,alias=unconsumedOne]| \&
+    |[account]| \&
+    |[note]| \&
+    |[note,fill=green,alias=unconsumedTwo]| \&
+    |[note,alias=lastTransRight]| \&
+    |[account,alias=aliceAccount,fill=green]| \&
+    |[note]| \&
+    |[note]| \&
+    |[note]| \&
+    |[account]| \&
+    |[note]| \&
+    |[note,fill=green]| \&
+    |[note]| \&
+    |[alias=rightInf]| \dots \&
+    \\
+  \end{tikzcd}
+
+\end{document}

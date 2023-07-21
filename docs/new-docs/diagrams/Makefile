@@ -1,6 +1,7 @@
 .PHONY: all
 
 all: \
+	account-spent-offset.png \
 	zeropool-keys.png \
 	merkle-tree-illustration.png \
 	transaction-acting-on-a-list.png
