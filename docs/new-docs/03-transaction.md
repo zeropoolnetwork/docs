@@ -57,7 +57,7 @@ the same input many times and produce different random output each time).
 
  - The receiving and outgoing keys are picked fresh for each transaction and
    used by the receivers of notes to decrypt notes posted on some public medium
-   (**TODO: Which one?**).
+   (**TODO: Which one? More specificity.**).
 
 ## Sequence of Accounts and Notes
 
@@ -118,7 +118,7 @@ that hash of the account doesn't reveal anything about the fields.
 The field $i$ is pointing at some position in the sequence of accounts and
 notes. All the notes belonging to this account that are located to the left
 of $i$ are considered joined (spent), and the ones in position $i$ and to the
-right of it are available for spending.
+right of it are available for joining.
 
 ![Account spent offset](diagrams/account-spent-offset.png)
 
@@ -150,27 +150,68 @@ and an account (belonging to $\eta$) to join the note with.
 
 :::info
 
-**TODO: What's written here is inaccurate. It's not zero hashes, it's all fields
-being set to 0 make accounts and notes behave in a special way.**
+Accounts and notes where all fields are filled with zero values have special
+meaning in ZeroPool.
 
-In practice, a lot of the time we will be working with hashes of account
-and note structures. Hash values equal to zero have special meaning in
-ZeroPool.
-
-- Special zero account is used to create new accounts: zero account has $0$
-  balance, no notes are associated with it and it can be spent multiple times
-  with any spending key $\sigma$. If you want to create a new account, you
-  "spend" the zero account with your freshly sampled key $\sigma$, and after
-  that you can start using your new account in future transactions.
+- Zero account is used to create new accounts: it has $0$ balance, no notes can
+  be associated with it, it has no concrete spending key but instead can be
+  spent multiple times with any spending key $\sigma$. If you want to create
+  a new account, you "spend" the zero account with your freshly sampled key
+  $\sigma$, and after that you can start using your new account in future
+  transactions.
 
 - Zero note hash means "do not use this note". Since the number of `INPUT` and
   `OUTPUT` notes transaction works on is fixed (to avoid privacy leakage), we
   need a way to encode dummy notes that are not to be used if the user wants to
-  use less of them, and zero note hashes do just that.
+  use less of them. Notes that have all fields set to zero do just that.
 
-Due to collision resistance, we're extremely unlikely to ever encounter account
-or note values that will actually hash to zero. Therefore, it's safe to treat
-zero hashes as special values.
+:::
+
+### Nullifiers
+
+Nullifiers are special values that are unique for each pair of account + its
+corresponding intermediate key $\eta$, which don't reveal the data of that
+account and key. In practice, it's simply the hash of the account (all the
+fields in its structure), accounts index in the sequence, and the intermediate
+key $\eta$ that the transaction is being invoked with,
+
+$$
+\textsf{nullifier} = H(\textsf{account}, \textsf{index}, \eta).
+$$
+
+For each transaction, the user publishes the nullifier of the account that
+serves as input to this transaction. The ZeroPool smart-contract keeps the
+global history of all nullifiers it had seen, and rejects the transaction if
+its corresponding nullifier was already recorded. This way, we make sure that
+no account can serve as input to a transaction more than once.
+
+Each account in the sequence has a unique index, its concrete field values
+and only one intermediate key $\eta$ that it can be spent with. Therefore,
+each account will have only one unique nullifier and won't be spent more than
+once. One exception to this is the special zero account. All of its fields
+are zero as well as its index, but each time it's being passed as input to a
+transaction, it's allowed to be spent with a new intermediate key $\eta$. Each
+such call to "spend" zero account will have a different nullifier due to
+different intermediate keys $\eta$ being used. This way, zero account can be
+spent by any intermediate key, but no more than once with each key.
+
+Nullifier prevents double spending of accounts, and ensures that there exists
+at most one unique account associated with each intermediate key $\eta$. In the
+meantime, account's spent offset $i$ ensures that no note can be spent twice —
+spending the note will move the spent offset of the account it belongs to to
+the right of the note forever marking it as spent.
+
+:::tip
+
+An account does not have to be "created" in order to receive notes from
+others. A user can simply generate keys $\sigma$, $\eta$, $(d, P_d)$ as usual
+(no interaction with blockchain needed for this), give diversified public
+address $(d, P_d)$ to a friend, and have the friend create notes on this
+address. Notes will be stored in the sequence even though there's no record of
+the account they belong to.
+
+Later, the user can create an account with $\sigma$ as usual, initialize its
+spent offset $i$ to 0 And start joining notes which his friend has sent him.
 
 :::
 
