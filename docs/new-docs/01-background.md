@@ -14,7 +14,7 @@ high-level overview of how zkSNARKs work.
 ## Merkle Tree
 
 Merkle tree is a mechanism for cryptographically commiting to some values. It
-allows efficiently revealing part of the commited values, recalculating the
+allows efficiently revealing part of the commited values, and recalculating the
 commitment when the values change.
 
 Leaves in a Merkle tree contain hashes of the commited values $v_0$ …
@@ -69,9 +69,9 @@ a leaf — verifier who is checking the proofs gets to see which leaf was
 modified.
 
 With zkSNARKs we can overcome this and perform both operations privately. A
-Verifier (for example, a smart-contract) can hold the root of a Merkle tree
-and allow a users to replace it with a new value, only if the user supplies
-a zkSNARK proof that modifications satisfy some criteria (for example, that
-only one leaf whose index is within a certain range was modified). We can prove
-Merkle proofs within a zkSNARK proof keeping them private and having Verifier
-store only the root hash of a (potentially huge) Merkle tree.
+Verifier (for example, a smart-contract) can hold the root of a Merkle tree and
+allow users to replace it with a new value, only if the user supplies a zkSNARK
+proof that modifications satisfy some criteria (for example, that only one leaf
+whose index is within a certain range was modified). We can prove Merkle proofs
+within a zkSNARK proof keeping them private and having Verifier store only the
+root hash of a (potentially huge) Merkle tree.

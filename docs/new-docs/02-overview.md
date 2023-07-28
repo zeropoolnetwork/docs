@@ -37,7 +37,7 @@ one ZeroPool transaction does the following:
    `INPUT` number of notes belonging to it,
 
 2. creates a new account associated with $\sigma$ and `OUTPUT` number of notes
-   which may belong to any (not necessarily same) accounts.
+   which may belong to any (potentially different) accounts.
 
 The consumed account and notes are called “input”, while the produced ones are
 called “output” of the transaction. So the transaction always “overwrites” one
@@ -56,8 +56,8 @@ recognize them and understand that they shouldn't be used.
 
 The transaction reveals the difference between the total balance of input
 account and its notes on one hand, and output account and notes on the other
-hand. If the difference negative (output is greater than input), this means
-that the total number of tokens in the ZeroPool has went up and therefore the
+hand. If the difference is negative (output is greater than input), this means
+that the total number of tokens in the ZeroPool is going up and therefore the
 transaction will expect the user to deposit the correct number of tokens to the
 smart contract's public account (on the underlying blockchain). Symmetrically,
 if the difference is positive, ZeroPool will allow the user to withdraw the
