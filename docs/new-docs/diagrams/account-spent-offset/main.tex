@@ -14,14 +14,14 @@
     note/.style={draw,circle,minimum size=2mm},
     spentMarker/.style={pattern=north east lines,pattern color=gray},
     boxAround/.style={
-      rectangle,draw,dotted,rounded corners=0.2cm,inner sep=3mm,outer sep=1mm,
+      rectangle,draw,dashed,rounded corners=0.2cm,inner sep=1.9mm,outer sep=1mm,
     },
   }
 % \tikzcdset{column sep/normal=0.2cm}
 \begin{document}
   \begin{tikzcd}[
     % row sep=normal,
-    column sep=4mm,
+    column sep=5mm,
     ampersand replacement=\&,
     nodes in empty cells,
     execute at end picture={
@@ -47,7 +47,7 @@
         \node[fit=(leftInf)(consumedThree),boxAround,pin={[text width=4cm,font=\normalsize]-90:{
           Alice's notes here are already joined, and can not be spent again
         }}] (boxLeft) {};
-        \node[fit=(unconsumedOne)(rightInf),boxAround,pin={[text width=4cm,font=\normalsize]-90:{
+        \node[fit=(spentOffset)(rightInf),boxAround,pin={[text width=4cm,font=\normalsize]-90:{
           Alice's notes here are available for joining
         }}] (boxRight) {};
         %
@@ -77,7 +77,7 @@
     |[account]| \&
     |[note]| \&
     |[note,fill=green]| \&
-    |[note]| \&
+    % |[note]| \&
     |[alias=rightInf]| \dots \&
     \\
   \end{tikzcd}
