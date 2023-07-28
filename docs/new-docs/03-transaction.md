@@ -23,7 +23,41 @@ instantiations of the same account, and transaction as modifying this account
 
 ## Keys
 
+The spending key $\sigma$ is the main key that controls the account and from
+which all the other keys — private and public — are derived. The following
+diagram shows the keys ZeroPool uses and the dependencies between them. We
+use straight arrows for deterministic mappings (which always produce the same
+value) and snake-shaped arrows for randomized mappings (that can be run with
+the same input many times and produce different random output each time).
+
 ![ZeroPool Keys Diagram](diagrams/zeropool-keys.png)
+
+ - Spending key $\sigma$ is used to sign each transaction, which is then
+   verified using verifier key $A$.
+
+   The $\sigma$ is necessary for spending ZeroPool tokens. It's supposed to
+   never leave user's device, and is only used to sign transactions locally.
+
+ - Intermediate key $\eta$ identifies user's account in a transaction. User
+   uses $\eta$ to create transactions, and later to prove the transaction
+   correctness using a zkSNARK proof. In zkSNARK, $\eta$ is treated as a secret
+   input so proof of transaction's correctness does not reveal $\eta$.
+
+   Compromising $\eta$ will deanonymize the user, but won't allow the tokens to
+   be stolen (assuming that $\sigma$ is not compromised).
+
+ - The diversified address $(d, P_d)$ is used as anonymous address that a user
+   gives to others in order to receive tokens (through notes) from them. It
+   does not reveal the user's $\eta$, but allows the user who presents the
+   correct $\eta$ to claim the tokens sent to this diversified address.
+
+   A user can generate as many diversified addresses as she wants from the
+   same $\eta$. If two different senders send tokens to the same diversified
+   address, they won't learn anything about each other's transations.
+
+ - The receiving and outgoing keys are picked fresh for each transaction and
+   used by the receivers of notes to decrypt notes posted on some public medium
+   (**TODO: Which one?**).
 
 ## Sequence of Accounts and Notes
 
