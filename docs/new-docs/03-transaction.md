@@ -145,8 +145,8 @@ Balance $b$ and salt $t$ here have the same meaning as in account.
 
 The diversified public address $(d, P_d)$ is binding a note to the account it's
 owned by. The values $d$ and $P_d$ are derived from $\eta$, but don't reveal
-$\eta$ itself. In order to join a note, the user must provide the value $\eta$
-and an account (belonging to $\eta$) to join the note with.
+$\eta$ itself. In order to join a note, the user must know the value $\eta$ and
+the account (belonging to $\eta$) to join the note with.
 
 :::info
 
@@ -160,7 +160,7 @@ meaning in ZeroPool.
   $\sigma$, and after that you can start using your new account in future
   transactions.
 
-- Zero note hash means "do not use this note". Since the number of `INPUT` and
+- Zero note means "do not use this note". Since the number of `INPUT` and
   `OUTPUT` notes transaction works on is fixed (to avoid privacy leakage), we
   need a way to encode dummy notes that are not to be used if the user wants to
   use less of them. Notes that have all fields set to zero do just that.
