@@ -276,14 +276,42 @@ Here's the breakdown of who holds each piece of data described above:
    2. His account: its index in the sequence and all the fields ($i, b, t$).
    3. The contents of all the notes that were sent to him by other users.
 
+### zkSNARK Constraint system
+
+In order to check that transactions proposed by users are valid, and avoid
+disclosing the transaction details (accounts invonved, amounts of tokens
+transferred) we use zkSNARKs. In this section, we define the zkSNARK constraint
+system used.
+
+Public inputs:
+
+1. `old_root`, the current Merkle tree root that serves at the commitment of
+   the accounts and notes sequence state before the transaction.
+2. `new_root`, the proposed root of the Merkle tree after the transaction.
+3. `nullifier`, the nullifier of transaction's input account (the one that's
+   being "spent" or consumed by the transaction).
+4. `delta`, the difference between the amount of tokens the transaction
+   produces and the amount it consumes (`delta` being a nonzero value means
+   that this transaction either involves a deposit into ZeroPool from an
+   account on the underlying blockchain or a withdrawal).
+
+Secret inputs:
+
+1. User's verifying $A$ and intermediate $\eta$ keys.
+2. The values of input account and notes.
+3. Merkle proofs pointing at the hashes of input accounts and notes in the
+   sequence bound by `old_root` committment.
+4. The values of the output account and notes.
+5. Index of the left-most zero leaf in the Merkle tree (the position from which
+   the output account and notes will be written to the sequence).
+6. The signature of all the above produced using user's spending key $\sigma$.
+
+Conditions checked:
+
+1. …
 
 ### Steps to Create a Transaction
 
-The public inputs of CSes are:
-
- - root
- - nullifier
- - out_commit
- - delta
 
 ### Steps to Verify a Transaction
+
