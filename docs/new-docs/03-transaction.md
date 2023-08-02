@@ -1,5 +1,9 @@
 # Transaction Overview
 
+On this page we overview different pieces of data that are involved in a
+transaction, and the invariant conditions on that data that the transactions
+maintain.
+
 As mentioned in [Overview](overview), ZeroPool encodes all possible actions a
 user may want to perform on the pool with a single transaction type. A ZeroPool
 transaction consumes one account (associated with user's spending key $\sigma$)
@@ -8,9 +12,6 @@ creates a new account (associated with the same spending key $\sigma$ as the
 old one) and `OUTPUT` number of new notes. The created new notes may belong to
 accounts of other users (with keys different from $\sigma$). Consumed account
 and notes can not be used again.
-
-There may exist no more than one account associated with a given spending key
-$\sigma$ at any single moment.
 
 :::tip
 
@@ -169,18 +170,21 @@ meaning in ZeroPool.
 
 ### Nullifiers
 
-Nullifiers are special values that are unique for each pair of account + its
-corresponding intermediate key $\eta$, which don't reveal the data of that
-account and key. In practice, it's simply the hash of the account (all the
-fields in its structure), accounts index in the sequence, and the intermediate
-key $\eta$ that the transaction is being invoked with,
+Nullifiers are special hash values that are computed based on account's data
+and its corresponding intermediate key $\eta$. An account's nullifier uniquely
+identifies the account — yet it doesn't reveal the data of that account or its
+key.
+
+More concretely, an account's nullifier is a hash of the account structure (all
+the fields in it), account's index in the sequence, and the intermediate key
+$\eta$ that the transaction is being invoked with,
 
 $$
 \textsf{nullifier} = H(\textsf{account}, \textsf{index}, \eta).
 $$
 
-For each transaction, the user publishes the nullifier of the account that
-serves as input to this transaction. The ZeroPool smart-contract keeps the
+When submitting a transaction, the user publishes the nullifier of the account
+that serves as input to this transaction. The ZeroPool smart-contract keeps the
 global history of all nullifiers it had seen, and rejects the transaction if
 its corresponding nullifier was already recorded. This way, we make sure that
 no account can serve as input to a transaction more than once.
@@ -224,8 +228,8 @@ incrementally append values to it.
 
 Consider a Merkle Tree of height $h$. To store the sequence $s_0, s_1 \dots
 s_{n-1}$ of accounts and notes in it, we assign first (going from left to
-right) $n$ leaves of the tree hashes $H(s_0), H(s_1) \dots H(s_{n-1})$ and fill
-the remaining $2^h - n$ leaves with zeroes. And we compute the values of all
+right) $n$ leaves of the tree hashes $H(s_0), H(s_1) \dots H(s_{n-1})$ and
+fill the remaining $2^h - n$ leaves with zeroes. We compute the values of all
 inner nodes according to the usual Merkle Tree rule. (If no transactions have
 happened yet and the sequence is empty, all leaves of the Merkle Tree will be
 initialized with zeroes.)
@@ -237,8 +241,8 @@ $k$ into $h$ bits and treat $0$s and $1$s in it as a sequence of "left" and
 recompute the Merkle Tree if some leaf is modified, or even multiple leaves in
 bulk by updating a subtree. We've covered this in [Background](background).
 
-Even though Merkle Tree allows modifying any leaf, including the ones we've
-assigned before, we only use this functionality to append values to the
+Even though Merkle Tree allows modifying any leaf (including the ones we've
+assigned before), we only use this functionality to append values to the
 sequence and never modify elements that were added to it before. Say, if the
 Merkle Tree leaves currently currently have values
 
@@ -246,8 +250,8 @@ $$
 H(s_0), H(s_1) \dots H(s_{n-1}), 0, 0 \dots 0
 $$
 
-assigned to them, the only modification we will do is assigning value
-$H(s_{n})$ to leaf $n$.
+assigned to them, the only modification we will do is overwriting the $0$ in
+leaf $n$ with value $H(s_{n})$.
 
 Using Merkle Tree commitment to implement a sequence of accounts and notes in
 ZeroPool means that the total length of the sequence can never exceed $2^h$.
