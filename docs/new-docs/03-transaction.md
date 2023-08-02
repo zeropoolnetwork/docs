@@ -17,8 +17,9 @@ and notes can not be used again.
 
 Since the consumed and newly created account have the same associated
 key $\sigma$ and belong to the same user, one can also view them as two
-instantiations of the same account, and transaction as modifying this account
-(overwriting some fields in it).
+instantiations of the same account, and transaction as modifying this account:
+creating a copy with some fields modified, invalidating the old version and
+marking the new one as current.
 
 :::
 
@@ -256,17 +257,27 @@ leaf $n$ with value $H(s_{n})$.
 Using Merkle Tree commitment to implement a sequence of accounts and notes in
 ZeroPool means that the total length of the sequence can never exceed $2^h$.
 
-## zkSNARK Constraint Systems
+## Putting Everything Together
 
-**TODO: Where to introduce nullifiers?**
+Here's the breakdown of who holds each piece of data described above:
 
-The global state maintained by the ZeroPool smart-contract is given by the root
-hash of Merkle Tree containing accounts and notes sequence. The smart-contract
-allows anyone to replace the root it stores with a new value only if the
-sequence commited to by the new root is obtained from the old one by applying a
-valid transaction to it.
+ - The ZeroPool smart-contract knows:
 
-TODO: Introduce zkSNARK CSes.
+   1. The `root` of the Merkle tree that commits to the current sequence of
+      accounts and notes.
+   2. The set of nullifiers published by transactions so far.
+
+   Since the operations performed by the smart-contract are public as well as
+   the data they operate on, these values are also visible to all users.
+
+ - Each ZeroPool user knows:
+
+   1. His spending $\sigma$, verifying $A$, intermediate $\eta$ keys.
+   2. His account: its index in the sequence and all the fields ($i, b, t$).
+   3. The contents of all the notes that were sent to him by other users.
+
+
+### Steps to Create a Transaction
 
 The public inputs of CSes are:
 
@@ -274,3 +285,5 @@ The public inputs of CSes are:
  - nullifier
  - out_commit
  - delta
+
+### Steps to Verify a Transaction
