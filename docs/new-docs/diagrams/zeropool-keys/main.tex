@@ -1,0 +1,60 @@
+\documentclass[convert={outfile=\jobname.png}]{standalone}
+\usepackage{varwidth}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{tikz-cd}
+\usetikzlibrary{graphs,graphdrawing,arrows.meta}
+\usetikzlibrary{arrows.meta, positioning, quotes, calc, backgrounds, decorations.pathreplacing}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{cd}
+\usetikzlibrary{fit}
+\tikzset
+  { filled/.style={fill=white},
+    titledBox/.style n args = {2}{draw, semithick, dashed, rounded corners,
+      inner xsep=1mm, inner ysep=3mm,
+      %
+      label={[name=#1,draw, fill=white, anchor=center]above:#2}
+    },
+    pinnedBox/.style n args = {2}{draw, semithick, dashed, rounded corners,
+      inner xsep=1mm, inner ysep=3mm,
+      %
+      pin={[pin distance=2cm,fill=white,anchor=center,text width=2.7cm,font=\small]#1:#2}
+    },
+    keyNode/.style = {
+      text width=2.5cm,
+    },
+    snake/.style = {
+      decorate,decoration={snake,amplitude=.3mm,segment length=1.3mm,post length=1mm},
+    },
+  }
+\begin{document}
+\begin{varwidth}{25cm}
+  \noindent
+    \begin{description}
+    \item[] \tikz \draw[->] (0,0) to (1,0); denotes a deterministic mapping
+    \item[] \tikz \draw[->,snake] (0,0) to (1,0); denotes a randomized mapping
+    \end{description}
+  \noindent
+  \begin{tikzpicture}
+    \node[keyNode] (spending) {Spending key $\sigma$};
+    \node[keyNode,below=of spending] (verifier) {Verifier key $A$};
+    \node[keyNode,below=of verifier] (interm) {Intermediate key $\eta$};
+      \draw[->] (spending) to (verifier);
+      \draw[->] (verifier) to (interm);
+
+     \node[keyNode,below left=2cm and 0.2cm of interm] (recieving) {Receiving key};
+     \node[keyNode,below=of recieving] (outgoing) {Outgoing key};
+       \draw[->,snake,out=-90,in=90] (interm) to (recieving);
+       \draw[->,snake] (recieving) to (outgoing);
+
+     \node[keyNode,below right=2cm and 0.2cm of interm] (address) {Anonymous address $(d, P_d)$};
+       \draw[->,snake,out=-90,in=90] (interm) to (address);
+
+    \node[fit=(spending)(interm),pinnedBox={30}{Private, genedated once per user}] {};
+    \node[fit=(recieving)(outgoing),pinnedBox={-110}{Freshly sampled for each transaction, serve as session keys}] {};
+    \node[fit=(address),pinnedBox={-70}{Freshly sampled on demand, hides user's identity $\sigma$}] {};
+  \end{tikzpicture}
+  % \begin{minipage}{15cm}
+  % \end{minipage}
+\end{varwidth}
+\end{document}
