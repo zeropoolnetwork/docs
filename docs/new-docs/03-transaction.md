@@ -368,18 +368,62 @@ This is done for performance reasons,
 
 ### Steps to Verify a Transaction
 
-One can view a smart-contract transaction as a mapping of the following form:
+ZeroPool smart-contract maintans an internal state consisting of two components:
 
-$$
-(\textsf{old\_state}, \textsf{transaction\_data}) \mapsto \textsf{new\_state},
-$$
-where
-- $\textsf{old\_state}$ is the state of smart-contract before transaction,
-- $\textsf{transaction\_data}$ is the arguments that the transaction called has supplied,
-- $\textsf{new\_state}$ is the new state smart-contract has arrived at after handling the transaction.
+- `root`, root of the Merkle tree containing the current sequence of accounts and notes,
+- `nullifiers`, history all nullifiers that were published in the past,
+- `snark_vk`, verifying key for zkSNARK proofs (initialized when ZeroPool smart-contract is deployed and never modified).
 
-The state of ZeroPool smart-contract is just root of the Merkle tree containing the current sequence of accounts and notes.
+TODO: make sure we describe all of these:
 
+```rust
+self.pool_index = U256::from(self.pool_index).unchecked_add(U256::from(128u8));
+self.roots.insert(&self.pool_index, &tx.root_after);
+self.nullifiers.insert(&tx.nullifier, &hash);
+self.all_messages_hash = new_all_messages_hash;
+```
 
+:::note
+
+Since the whole set of nullifiers can get quite large,
+  in practice one may store only Merkle commitment to the set
+  and have the transaction caller prove that certain nullifier is or isn't in the set.
+This way, whole state maintained by the contract will consist only of two Merkle commitments.
+
+To simplify the exposition,
+  we will treat nullifiers as a list of values and have contract manipulate it directly in this section.
+
+:::
+
+ZeroPool expects the following parameters to each transaction it receives.
+Note that since all computation steps of a smart-contract are public,
+  these values are publicly visible.
+
+- `new_root`
+- `nullifier`
+- `snark_proof`
+- `delta`
+- `withdrawal_address`
+
+A transaction peforms the following:
+
+1. Check that `nullifier` is not present in saved `nullifiers` state.
+
+1. Retrieve `old_root` saved in the smart-contract state, and verify the `snark_proof` with
+     - `snark_vk` as verifying key,
+     - `(delta, nullifier, old_root, new_root)` as public inputs.
+
+1. Handle net balance change:
+
+     - If $\textsf{delta} < 0$,
+         ensure that the transaction has deposited `delta` tokens to ZeroPool smart-contracts's account
+         (on the underlying blockchain).
+
+     - If $\textsf{delta} > 0$ and all the checks above passed,
+         send `delta` amount of tokens to address `withdrawal_address`.
+
+1. If no error occured in the steps above,
+     save `new_root` as the root and append `nullifier` to the `nullifiers`
+     in the new state.
 
 ### Steps to Create a Transaction
