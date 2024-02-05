@@ -9,7 +9,7 @@ We use zkSNARKs to enable a smart contract verify conditions on secret
 user-supplied data without seeing it.
 
 See [docs for fawkes-crypto library](/docs/fawkes-crypto/background) for a
-high-level overview of how zkSNARKs work.
+high-level overview of what zkSNARKs can do.
 
 ## Merkle Tree
 

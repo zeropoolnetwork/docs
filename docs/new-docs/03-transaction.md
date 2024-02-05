@@ -283,7 +283,7 @@ disclosing the transaction details (accounts invonved, amounts of tokens
 transferred) we use zkSNARKs. In this section, we define the zkSNARK constraint
 system used.
 
-Public inputs:
+#### Public Inputs
 
 1. `old_root`, the current Merkle tree root that serves at the commitment of
    the accounts and notes sequence state before the transaction.
@@ -295,20 +295,64 @@ Public inputs:
    that this transaction either involves a deposit into ZeroPool from an
    account on the underlying blockchain or a withdrawal).
 
-Secret inputs:
+#### Secret Inputs
 
 1. User's verifying $A$ and intermediate $\eta$ keys.
-2. The values of input account and notes.
-3. Merkle proofs pointing at the hashes of input accounts and notes in the
-   sequence bound by `old_root` committment.
-4. The values of the output account and notes.
-5. Index of the left-most zero leaf in the Merkle tree (the position from which
-   the output account and notes will be written to the sequence).
-6. The signature of all the above produced using user's spending key $\sigma$.
 
-Conditions checked:
+1. Transaction:
 
-1. …
+   1. The values of input account and notes, $\textsf{in\_account}$ and $\textsf{in\_notes}[\textsf{INPUT}]$.
+   1. Merkle proofs pointing at the hashes of input accounts
+        and notes in the sequence bound by `old_root` committment.
+   1. The values of the output account and notes, $\textsf{out\_account}$ and $\textsf{out\_notes}[\textsf{OUTPUT}]$.
+   1. Index of the left-most zero leaf in the Merkle tree
+        (the position from which the output account and notes will be written to the sequence).
+
+1. The signature of the transaction above produced using user's spending key $\sigma$.
+
+
+:::info
+
+Note that the spending key $\sigma$ which is necessary to create transactions
+  is not part of (public or secret) inputs to zkSNARK constraint system.
+This means that $\sigma$ can be stored on a separate hardware ledger (capable of signing)
+  providing an extra level of security in case the device that computes zkSNARK proofs is compromised.
+
+:::
+
+#### Conditions Checked
+
+1. Input notes are unique or blank (all fields equal zero).
+   Output notes are unique or blank.
+
+1. Keys:
+
+   - Transaction's signature is correct (checked using verifying key $A$).
+   - The intermediate key $\eta$ is the one derived from $A$,
+       (the mapping $A \mapsto \eta$ is deterministic).
+   - The $\eta$ is owner of input and output accounts —
+  	   checked using $\textsf{account}.\eta$ field.
+   - The $\eta$ is the owner of input notes (but not necessary owner of output notes).
+     This is checked by looking at note's diversified address $(d, P_d)$
+       and checking that it's associated with $\eta$.
+
+1. The public nullifier for input account is computed correctly.
+
+1. Inputs Merkle proofs:
+
+     - The input account is either blank
+         (meaning that it's being created for the first time)
+         or has a valid Merkle proof showing that it's present in the sequence.
+
+     - The input notes are either blank (unused) or have valid Merkle proofs.
+
+1. Spent note index only moves forward, $\textsf{in\_account}.i \leq \textsf{out\_account}.i$.
+
+1. The positions of all non-blank input notes in the sequence (proven by Merkle proofs above)
+     must be between $\textsf{in\_account}.i$ and $\textsf{out\_account}.i$.
+
+1. Difference between input (account and notes) balances
+     and output (account and notes) balances should be equal to `delta`.
 
 ### Steps to Create a Transaction
 
