@@ -152,59 +152,66 @@ the account (belonging to $\eta$) to join the note with.
 
 :::info
 
-Accounts and notes where all fields are filled with zero values have special
-meaning in ZeroPool.
+Accounts and notes where all fields are filled with zero values are called “blank”
+  and have special meaning in ZeroPool.
 
-- Zero account is used to create new accounts: it has $0$ balance, no notes can
-  be associated with it, it has no concrete spending key but instead can be
-  spent multiple times with any spending key $\sigma$. If you want to create
-  a new account, you "spend" the zero account with your freshly sampled key
-  $\sigma$, and after that you can start using your new account in future
-  transactions.
+- Blank account is used to create new accounts:
+    it has $0$ balance,
+    no notes can be associated with it,
+    it has no concrete spending key
+    but instead can be spent multiple times with any spending key $\sigma$.
+  If you want to create a new account,
+    you "spend" the blank account with your freshly sampled key $\sigma$,
+    and after that you can start using your new account in future transactions.
 
-- Zero note means "do not use this note". Since the number of `INPUT` and
-  `OUTPUT` notes transaction works on is fixed (to avoid privacy leakage), we
-  need a way to encode dummy notes that are not to be used if the user wants to
-  use less of them. Notes that have all fields set to zero do just that.
+- Blank note means "do not use this note".
+  Since the number of `INPUT` and `OUTPUT` notes transaction works on is fixed
+    (to keep the number of actually used notes private),
+    we need a way to encode dummy notes that are not to be used
+    if the user wants to use less of them.
+  Blank notes that have all fields set to zero do just that.
 
 :::
 
 ### Nullifiers
 
 Nullifiers are special hash values that are computed based on account's data
-and its corresponding intermediate key $\eta$. An account's nullifier uniquely
-identifies the account — yet it doesn't reveal the data of that account or its
-key.
+  and its corresponding intermediate key $\eta$.
+An account's nullifier uniquely identifies the account
+  — yet it doesn't reveal the data of that account or its key.
 
-More concretely, an account's nullifier is a hash of the account structure (all
-the fields in it), account's index in the sequence, and the intermediate key
-$\eta$ that the transaction is being invoked with,
+More concretely, an account's nullifier is a hash of the account structure (all the fields in it),
+  account's index in the sequence,
+  and the intermediate key $\eta$ that the transaction is being invoked with,
 
 $$
 \textsf{nullifier} = H(\textsf{account}, \textsf{index}, \eta).
 $$
 
 When submitting a transaction, the user publishes the nullifier of the account
-that serves as input to this transaction. The ZeroPool smart-contract keeps the
-global history of all nullifiers it had seen, and rejects the transaction if
-its corresponding nullifier was already recorded. This way, we make sure that
-no account can serve as input to a transaction more than once.
+  that serves as input to this transaction.
+The ZeroPool smart-contract keeps the global (public) history of all nullifiers it had seen,
+  and rejects the transaction if its corresponding nullifier was already recorded.
+This way, we make sure that no account can serve as input to a transaction more than once.
 
-Each account in the sequence has a unique index, its concrete field values
-and only one intermediate key $\eta$ that it can be spent with. Therefore,
-each account will have only one unique nullifier and won't be spent more than
-once. One exception to this is the special zero account. All of its fields
-are zero as well as its index, but each time it's being passed as input to a
-transaction, it's allowed to be spent with a new intermediate key $\eta$. Each
-such call to "spend" zero account will have a different nullifier due to
-different intermediate keys $\eta$ being used. This way, zero account can be
-spent by any intermediate key, but no more than once with each key.
+Each account in the sequence has a unique index,
+  its concrete field values and only one intermediate key $\eta$ that it can be spent with.
+Therefore, each account will have only one unique nullifier
+  and won't be spent more than once.
+One exception to this is the special blank account.
+All of its fields are zero as well as its index,
+  but each time it's being passed as input to a transaction,
+  it's allowed to be spent with a new intermediate key $\eta$.
+Each such call to "spend" blank account will have a different nullifier
+  due to different intermediate keys $\eta$ being used.
+This way, zero account can be spent by any intermediate key,
+  but no more than once with each key.
 
-Nullifier prevents double spending of accounts, and ensures that there exists
-at most one unique account associated with each intermediate key $\eta$. In the
-meantime, account's spent offset $i$ ensures that no note can be spent twice —
-spending the note will move the spent offset of the account it belongs to to
-the right of the note forever marking it as spent.
+Nullifier prevents double spending of accounts,
+  and ensures that there exists at most one unique account associated with each intermediate key $\eta$.
+In the meantime, account's spent offset $i$ ensures that no note can be spent twice
+  — spending the note will move the spent offset of the account it belongs to,
+  to the right of the note forever marking it as spent.
 
 :::tip
 
@@ -354,8 +361,25 @@ This means that $\sigma$ can be stored on a separate hardware ledger (capable of
 1. Difference between input (account and notes) balances
      and output (account and notes) balances should be equal to `delta`.
 
-### Steps to Create a Transaction
-
+The current ZeroPool implementation splits the conditions above into two separate sets of zkSNARK constraints
+  called “tree circuit” and “transaction circuit”.
+This is done for performance reasons,
+  but the result is the same as checking all the conditions in one circuit.
 
 ### Steps to Verify a Transaction
 
+One can view a smart-contract transaction as a mapping of the following form:
+
+$$
+(\textsf{old\_state}, \textsf{transaction\_data}) \mapsto \textsf{new\_state},
+$$
+where
+- $\textsf{old\_state}$ is the state of smart-contract before transaction,
+- $\textsf{transaction\_data}$ is the arguments that the transaction called has supplied,
+- $\textsf{new\_state}$ is the new state smart-contract has arrived at after handling the transaction.
+
+The state of ZeroPool smart-contract is just root of the Merkle tree containing the current sequence of accounts and notes.
+
+
+
+### Steps to Create a Transaction
