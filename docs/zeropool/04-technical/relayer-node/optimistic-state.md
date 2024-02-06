@@ -39,4 +39,4 @@ It is essential that whatever happens with the client application or the relayer
   * If ok, the updates corresponding status in the Tx Db, otherwise it launches rollback mode and marks all the later transactions ( already processed by the relayer ) as failed
 * The client eventually loads the updated transaction status. If the transaction was successful, then the balance is updated, otherwise the transaction is shown as failed.
 
-![](<../../../static/img/optimistic state.png>)
+![](<../../../../static/img/optimistic state.png>)

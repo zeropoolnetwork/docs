@@ -6,7 +6,7 @@ description: Different key types
 
 ZeroPool is based on complex cryptography. There are several keys needed for private transactions. The relationship between these keys is presented in the scheme below.
 
-![](../../../static/img/keys.png)
+![](../../../../static/img/keys.png)
 
 * **Spending key (**$$\sigma$$**)** is the top secret key. It is used to derive other keys and to sign transactions. At a high level it is just a random 256-bit number which should be stored securely on the client side. The simplest way to get a spending key is to produce a random number.  But in a production client software implementation more complex approaches should be used (e.g. [hierarchical deterministic wallets](https://github.com/bitcoin/bips/blob/master/bip-0044.mediawiki)). Concrete approaches for spending key derivation by a client are not discussed here.
 * **Transaction verifier key (**$$A$$**)** is used for transaction signature verification. It's derived from the spending key and multiplied by the generator point in the JubJub elliptic curve field: $$A = \sigma G$$
