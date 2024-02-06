@@ -1,4 +1,4 @@
-# ZeroPool
+# ZeroPool Contract
 
 ZeroPool is a smart-contract that implements private token transactions on
 top of a public blockchain. One can deposit public tokens into their private
