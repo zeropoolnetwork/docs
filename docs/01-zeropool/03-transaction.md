@@ -374,15 +374,6 @@ ZeroPool smart-contract maintans an internal state consisting of two components:
 - `nullifiers`, history all nullifiers that were published in the past,
 - `snark_vk`, verifying key for zkSNARK proofs (initialized when ZeroPool smart-contract is deployed and never modified).
 
-TODO: make sure we describe all of these:
-
-```rust
-self.pool_index = U256::from(self.pool_index).unchecked_add(U256::from(128u8));
-self.roots.insert(&self.pool_index, &tx.root_after);
-self.nullifiers.insert(&tx.nullifier, &hash);
-self.all_messages_hash = new_all_messages_hash;
-```
-
 :::note
 
 Since the whole set of nullifiers can get quite large,
@@ -426,4 +417,6 @@ A transaction peforms the following:
      save `new_root` as the root and append `nullifier` to the `nullifiers`
      in the new state.
 
+<!---
 ### Steps to Create a Transaction
+-->
