@@ -6,7 +6,7 @@ description: EVM-based
 
 The ZeroPool solution is based on several interrelated smart contracts. The main purpose of the contract subsystem is to store the current [Merkle tree](../../untitled/) state inside the base blockchain. Each ZeroPool transaction changes the Merkle tree, so it should be processed by a smart contract. See the subsystem below, where the Pool contract is the primary contract for processing transactions.
 
-<figure><img src="../../../../static/img/1_Light_Smart Contracts.jpg" alt="" /><figcaption></figcaption></figure>
+<figure><img src="../../../../../static/img/1_Light_Smart Contracts.jpg" alt="" /><figcaption></figcaption></figure>
 
 :::tip
 

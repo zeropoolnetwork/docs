@@ -22,7 +22,7 @@ const Header = () => {
               <a href="#contacts">Contact us</a>
             </li>
             <li className="header__links__li">
-              <Link className="header__links__li" to="/docs/intro" >Docs</Link>
+              <Link className="header__links__li" to="/docs" >Docs</Link>
             </li>
           </ul>
         </nav>

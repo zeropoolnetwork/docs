@@ -12,7 +12,7 @@ The memo block contains detailed transaction data such as output notes, accounts
 
 The memo block consists of the fields below. There are two optional fields in the memo block, dependent on transaction type: `native amount` and `receiver`. These values are only included in the withdrawal transaction's memo block.
 
-![The memo block structure](../../../../static/img/memo\_new\_eng.png)
+![The memo block structure](../../../../../static/img/memo\_new\_eng.png)
 
 | Field name              | Size (bytes)            | Description                                                                                                                                                       |
 | ----------------------- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |

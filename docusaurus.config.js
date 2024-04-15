@@ -35,7 +35,9 @@ const config = {
       /** @type {import('@docusaurus/preset-classic').Options} */
       ({
         docs: {
-          sidebarPath: require.resolve('./sidebars.js'),
+          path: 'docs/privacy-engine',
+          routeBasePath: 'docs/privacy-engine',
+          sidebarPath: require.resolve('./sidebars-privacy.js'),
           remarkPlugins: [math],
           rehypePlugins: [katex],
         },
@@ -45,6 +47,21 @@ const config = {
       }),
     ],
   ],
+
+  plugins: [
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'storage',
+        path: 'docs/sharded-storage',
+        routeBasePath: 'docs/sharded-storage',
+        sidebarPath: require.resolve('./sidebars-storage.js'),
+        remarkPlugins: [math],
+        rehypePlugins: [katex],
+      },
+    ],
+  ],
+
   stylesheets: [
     {
       href: '/css/katex.min.css',
@@ -80,8 +97,7 @@ const config = {
             label: 'Contact us',
           },
           {
-            type: 'doc',
-            docId: 'intro',
+            to: '/docs',
             position: 'left',
             label: 'Docs',
           },

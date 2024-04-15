@@ -5,7 +5,7 @@ const WhatIs = () => {
   return (
     <section className="what-is" id="what-is">
       <img className="what-is__img" src={logo} alt="logo"/>
-      <h2 className="what-is__title">WHAT IS ZEROPOOL</h2>
+      <h2 className="what-is__title">WHAT IS ZEROPOOL PRIVACY ENGINE</h2>
       <div>
         <p className="what-is__text">ZeroPool is fully private multi-blokchain solution. Low transaction fees, atomic swaps and common anonymity
           set. Balances and transaction graph are hidden and compatibility with network identity hiding technologies, like

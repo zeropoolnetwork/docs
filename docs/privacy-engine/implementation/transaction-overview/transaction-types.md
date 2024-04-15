@@ -12,7 +12,7 @@ The current protocol implementation supports three transaction types: deposit, t
 <Tabs>
   <TabItem value="deposit" label="Deposit" default>
 
-<figure><img src="../../../static/img/Transaction Types_Tab1_DEPOSIT.png" alt="" /><figcaption></figcaption></figure>
+<figure><img src="../../../../static/img/Transaction Types_Tab1_DEPOSIT.png" alt="" /><figcaption></figcaption></figure>
 
 A deposit transaction delivers external funds to the user's account. It is assumed the user initiating the deposit transaction has made a prior token approval to the ZeroPool contract.
 
@@ -35,7 +35,7 @@ The user must include a deposit signature field to the transaction. This field c
 
 <TabItem value="transfer" label="Transfer">
 
-<figure><img src="../../../static/img/Transaction Types_Tab2_TRANSFER.png" alt="" /><figcaption></figcaption></figure>
+<figure><img src="../../../../static/img/Transaction Types_Tab2_TRANSFER.png" alt="" /><figcaption></figcaption></figure>
 
 This transaction moves an amount of funds to one or more internal (ZeroPool) receivers. The transfer transaction does not change the receiver's account balance immediately. Instead one or more payment notes are generated and sent inside the transaction's memo block.
 
@@ -53,7 +53,7 @@ The transfer transaction emits an output account and output notes to push them i
 
 <TabItem value="withdrawal" label="Withdrawal">
 
-<figure><img src="../../../static/img/Transaction Types_Tab3_WITHDRAWAL.png" alt="" /><figcaption></figcaption></figure>
+<figure><img src="../../../../static/img/Transaction Types_Tab3_WITHDRAWAL.png" alt="" /><figcaption></figcaption></figure>
 
 A withdrawal transaction move funds from the ZeroPool account to the external destination point. Destination address is specified in the `memo.receiver` field (a chain-specific address).
 
