@@ -1,41 +1,29 @@
-## Base ########################################################################
-# Use a larger node image to do the build for native deps (e.g., gcc, python)
-FROM node:lts as base
+# Use Node.js as the base image for building the application
+FROM node:16 AS builder
 
-# Reduce npm log spam and colour during install within Docker
-ENV NPM_CONFIG_LOGLEVEL=warn
-ENV NPM_CONFIG_COLOR=false
+# Set the working directory inside the container
+WORKDIR /app
 
-# We'll run the app as the `node` user, so put it in their home directory
-WORKDIR /home/node/app
-# Copy the source code over
-COPY --chown=node:node . /home/node/app/
+# Copy package.json and package-lock.json to the working directory
+COPY package*.json ./
 
-## Development #################################################################
-# Define a development target that installs devDeps and runs in dev mode
-FROM base as development
-WORKDIR /home/node/app
-# Install (not ci) with dependencies, and for Linux vs. Linux Musl (which we use for -alpine)
-RUN npm install
-# Switch to the node user vs. root
-USER node
-# Expose port 3000
-EXPOSE 3000
-# Start the app in debug mode so we can attach the debugger
-CMD ["npm", "start"]
+# Install dependencies using npm ci for a deterministic build
+RUN npm ci
 
-## Production ##################################################################
-# Also define a production target which doesn't use devDeps
-FROM base as production
-WORKDIR /home/node/app
-COPY --chown=node:node --from=development /home/node/app/node_modules /home/node/app/node_modules
-# Build the Docusaurus app
+# Copy the rest of the project files to the working directory
+COPY . .
+
+# Build the Docusaurus application
 RUN npm run build
-CMD ["npm", "run", "serve_prod"]
 
-## Deploy ######################################################################
-# Use a stable nginx image
-FROM nginx:stable-alpine as deploy
-WORKDIR /home/node/app
-# Copy what we've installed/built from production
-COPY --chown=node:node --from=production /home/node/app/build /usr/share/nginx/html/
+# Use Nginx as the base image for the production stage
+FROM nginx:alpine
+
+# Copy the built files from the previous stage to the Nginx html directory
+COPY --from=builder /app/build /usr/share/nginx/html
+
+# Expose port 80 to allow incoming HTTP traffic
+EXPOSE 80
+
+# Run Nginx in the foreground when the container starts
+CMD ["nginx", "-g", "daemon off;"]
