@@ -401,3 +401,7 @@
   width: 44px;
   height: 44px;
 }
+
+.footer__link-separator {
+  opacity: 0;
+}

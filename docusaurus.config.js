@@ -6,6 +6,7 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const math = require('remark-math');
 const katex = require('rehype-katex');
 
+
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'ZeroPool',
@@ -37,7 +38,13 @@ const config = {
         docs: {
           path: 'docs/privacy-engine',
           routeBasePath: 'docs/privacy-engine',
-          sidebarPath: require.resolve('./sidebars-privacy.js'),
+          sidebarPath: require.resolve('./sidebars.js'),
+          remarkPlugins: [math],
+          rehypePlugins: [katex],
+        },
+        blog: {
+          path: 'research',
+          routeBasePath: 'research',
           remarkPlugins: [math],
           rehypePlugins: [katex],
         },
@@ -55,7 +62,7 @@ const config = {
         id: 'storage',
         path: 'docs/sharded-storage',
         routeBasePath: 'docs/sharded-storage',
-        sidebarPath: require.resolve('./sidebars-storage.js'),
+        sidebarPath: require.resolve('./sidebars.js'),
         remarkPlugins: [math],
         rehypePlugins: [katex],
       },
@@ -79,22 +86,17 @@ const config = {
           {
             href: '/',
             position: 'left',
-            label: 'What is ZeroPool',
+            label: 'ZeroPool',
           },
           {
-            href: '/#technologies',
-            position: 'left',
-            label: 'Key technologies',
-          },
-          {
-            href: '/#partners',
-            position: 'left',
-            label: 'Our partners',
-          },
-          {
-            href: '/#contacts',
+            href: '#contacts',
             position: 'left',
             label: 'Contact us',
+          },
+          {
+            href: '/research',
+            position: 'left',
+            label: 'Research',
           },
           {
             to: '/docs',
@@ -102,21 +104,7 @@ const config = {
             label: 'Docs',
           },
         ],
-      },
-      footer: {
-        style: 'dark',
-        links: [
-          // {
-          //   title: 'Docs',
-          //   items: [
-          //     {
-          //       label: 'Tutorial',
-          //       to: '/docs/intro',
-          //     },
-          //   ],
-          // },
-        ],
-      },
+      }, 
       prism: {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,

@@ -10,16 +10,16 @@ const Header = () => {
         <nav>
           <ul className={`header__links ${showMobileNav ? 'header__links--mobile-open' : ''}`}>
             <li className="header__links__li">
-              <a href="#what-is">What is ZeroPool</a>
-            </li>
-            <li className="header__links__li">
-              <a href="#technologies">Key technologies</a>
+              <a href="#">ZeroPool</a>
             </li>
             <li className="header__links__li">
               <a href="#partners">Our partners</a>
             </li>
             <li className="header__links__li">
               <a href="#contacts">Contact us</a>
+            </li>
+            <li className="header__links__li">
+              <Link className="header__links__li" to="/research" >Research</Link>
             </li>
             <li className="header__links__li">
               <Link className="header__links__li" to="/docs" >Docs</Link>
