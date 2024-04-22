@@ -4,282 +4,147 @@ description: To interact with the relayer
 
 # REST API
 
-{% swagger method="post" path="/transaction" baseUrl="http://relayer" summary="Send a transaction to the contract" %}
-{% swagger-description %}
-This method checks an incoming transaction, builds the zkSNARK Merkle tree proof, and sends the transaction to the Pool contract. The transaction doesn’t process immediately because contract interaction is completed in a serial manner. Incoming transactions are put into the job queue. The method returns 
+## Send a transaction to the contract
 
-`jobId`
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | /transaction | This method checks an incoming transaction, builds the zkSNARK Merkle tree proof, and sends the transaction to the Pool contract. The transaction doesn't process immediately because contract interaction is completed in a serial manner. Incoming transactions are put into the job queue. The method returns `jobId` on success. |
 
- on success
-{% endswagger-description %}
+### Request Parameters
 
-{% swagger-parameter in="body" name="proof" type="Dictionary" required="true" %}
-Transaction proof (built by a client)
-{% endswagger-parameter %}
+| Parameter | In | Type | Required | Description |
+|-----------|---|------|----------|-------------|
+| proof | body | Dictionary | true | Transaction proof (built by a client) |
+| memo | body | String | true | Memo block, Base64-encoded |
+| tx_type | body | Integer | true | 0: deposit, 1: transfer, 2: withdrawal |
+| depositSignature | body | String | false | Account nullifier signature with the client's native chain private key (for withdrawal tx only) |
 
-{% swagger-parameter in="body" required="true" name="memo" type="String" %}
-Memo block, Base64-encoded
-{% endswagger-parameter %}
+### Responses
 
-{% swagger-parameter in="body" required="true" name="tx_type" type="Integer" %}
-0: deposit, 1: transfer, 2: withdrawal
-{% endswagger-parameter %}
+| Status | Description |
+|--------|-------------|
+| 201: Created | Transaction has been pushed to the job queue |
+| 400: Bad Request | Error while parsing the input JSON |
+| 500: Internal Server Error | Something went wrong |
 
-{% swagger-parameter in="body" required="false" name="depositSignature" type="String" %}
-Account nullifier signature with the client's native chain private key (for withdrawal tx only)
-{% endswagger-parameter %}
+## Get the job status
 
-{% swagger-response status="201: Created" description="Transaction has been pushed to the job queue" %}
-```javascript
-{
-    "jobId": "1"
-}
-```
-{% endswagger-response %}
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | /job/:id | Returns incoming transaction processing state. `jobId` is returned by /transaction method. |
 
-{% swagger-response status="400: Bad Request" description="Error while parsing the input JSON" %}
-```javascript
-{
-    error: "Error while parsing the input JSON",
-    description: "tx_type is incorrect"
-}
-```
-{% endswagger-response %}
+### Request Parameters
 
-{% swagger-response status="500: Internal Server Error" description="Something went wrong" %}
-```javascript
-{
-    error: "An internal error has occured. Please try again later",
-    description: "optional error description"
-}
-```
-{% endswagger-response %}
-{% endswagger %}
+| Parameter | In | Type | Required | Description |
+|-----------|---|------|----------|-------------|
+| id | query | Integer | true | Job identifier |
 
-{% swagger method="get" path="/job/:id" baseUrl="http://relayer" summary="Get the job status" %}
-{% swagger-description %}
-Returns incoming transaction processing state. 
+### Responses
 
-`jobId`
+| Status | Description |
+|--------|-------------|
+| 200: OK | Job status in body |
+| 404: Not Found | Job with specified ID not found |
+| 500: Internal Server Error | Something went wrong |
 
- is returned by /transaction method
-{% endswagger-description %}
+## Query transactions
 
-{% swagger-parameter in="query" name="id" type="Integer" required="true" %}
-Job identifier
-{% endswagger-parameter %}
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | /transactions/:limit/:offset | Returns memo blocks and out commits for transactions at the specified offset. This method is used by clients to synchronize account state. |
 
-{% swagger-response status="200: OK" description="Job status in body" %}
-```javascript
-{
-    "state": "failed",
-    "txHash": null
-}
-```
-{% endswagger-response %}
+### Request Parameters
 
-{% swagger-response status="404: Not Found" description="Job with specified ID not found" %}
-```javascript
-"Job 2 not found"
-```
-{% endswagger-response %}
+| Parameter | In | Type | Required | Description |
+|-----------|---|------|----------|-------------|
+| limit | query | Integer | true | Number of transactions to query |
+| offset | query | Integer | true | The Index of the first transaction (in the Merkle tree, should be a multiple of 128) |
 
-{% swagger-response status="500: Internal Server Error" description="Something went wrong" %}
-```javascript
-{
-    error: "An internal error has occured. Please try again later",
-    description: "optional error description"
-}}
-```
-{% endswagger-response %}
-{% endswagger %}
+### Responses
 
-{% swagger method="get" path="/transactions/:limit/:offset" baseUrl="http://relayer" summary="Query transactions" %}
-{% swagger-description %}
-Returns memo blocks and out commits for transactions at the specified offset. This method is used by clients to synchronize account state.
-{% endswagger-description %}
+| Status | Description |
+|--------|-------------|
+| 200: OK | Array of requested transactions |
+| 400: Bad Request | Check query parameters |
+| 500: Internal Server Error | Something went wrong |
 
-{% swagger-parameter in="query" name="limit" type="Integer" required="true" %}
-Number of transactions to query
-{% endswagger-parameter %}
+## Get Merkle tree proofs at the specified position
 
-{% swagger-parameter in="query" name="offset" type="Integer" required="true" %}
-The Index of the first transaction (in the Merkle tree, should be  a multiple of 128)
-{% endswagger-parameter %}
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | /merkle/proof?[index] | Get Merkle tree proofs at the specified position |
 
-{% swagger-response status="200: OK" description="Array of requested transactions" %}
-```javascript
-[
-    (Buffer|null)
-]
-```
-{% endswagger-response %}
+### Responses
 
-{% swagger-response status="400: Bad Request" description="Check query parameters" %}
-```javascript
-{
-    error: "Incorrect parameters",
-    description: "limit is too high"
-}
-```
-{% endswagger-response %}
+| Status | Description |
+|--------|-------------|
+| 200: OK | Success |
+| 404: Not Found | Specified index doesn't exist in the current tree |
+| 500: Internal Server Error | Something went wrong |
 
-{% swagger-response status="500: Internal Server Error" description="Something went wrong" %}
-```javascript
-{
-    error: "An internal error has occured. Please try again later",
-    description: "optional error description"
-}
-```
-{% endswagger-response %}
-{% endswagger %}
+## Get Merkle tree root node at the specified index
 
-{% swagger method="get" path="/merkle/proof?[index]" baseUrl="http://relayer" summary="Get Merkle tree proofs at the specified position" %}
-{% swagger-description %}
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | /merkle/root/:index | Get Merkle tree root node at the specified index |
 
-{% endswagger-description %}
+### Request Parameters
 
-{% swagger-response status="200: OK" description="Success" %}
-```javascript
-{
-    root, // Merkle tree root for this proofs
-    deltaIndex, // this index should be used for building tx proof
-    proofs // Merkle tree proofs
-}
-```
-{% endswagger-response %}
+| Parameter | In | Type | Required | Description |
+|-----------|---|------|----------|-------------|
+| index | query | Integer | false | - |
 
-{% swagger-response status="404: Not Found" description="Specified index doesn't exist in the current tree" %}
-```javascript
-"Incorrect index"
-```
-{% endswagger-response %}
+### Responses
 
-{% swagger-response status="500: Internal Server Error" description="Something went wrong" %}
-```javascript
-{
-    error: "An internal error has occured. Please try again later",
-    description: "optional error description"
-}
-```
-{% endswagger-response %}
-{% endswagger %}
+| Status | Description |
+|--------|-------------|
+| 200: OK | Success |
+| 404: Not Found | Index not exist in the Merkle tree |
+| 500: Internal Server Error | Something went wrong |
 
-{% swagger method="get" path="/merkle/root/:index" baseUrl="http://relayer" summary="Get Merkle tree root node at the specified index" %}
-{% swagger-description %}
+## Calculate transaction proof
 
-{% endswagger-description %}
+| Method | Path | Summary |
+|--------|------|---------|
+| POST | /proof_tx | Builds zkSNARK proof for the transaction based on public and secret transaction input calculated by a client. **WARNING:** This is a debug method used to decrease client overhead. DO NOT use in production, as the client should pass public and secret transactional data. This significantly decreases overall security! |
 
-{% swagger-parameter in="query" name="index" type="Integer" %}
+### Request Parameters
 
-{% endswagger-parameter %}
+| Parameter | In | Type | Required | Description |
+|-----------|---|------|----------|-------------|
+| pub | body | Dictionary | true | Public inputs for the circuit |
+| sec | body | Dictionary | true | Secret inputs for the circuit |
 
-{% swagger-response status="200: OK" description="Success" %}
-```javascript
-"11469701942666298368112882412133877458305516134926649826543144744382391691533"
-```
-{% endswagger-response %}
+### Responses
 
-{% swagger-response status="404: Not Found" description="Index not exist in the Merkle tree" %}
-```javascript
-"Index not exist in the Merkle tree"
-```
-{% endswagger-response %}
+| Status | Description |
+|--------|-------------|
+| 200: OK | Proof has been calculated successfully |
+| 400: Bad Request | Error in the public or secret input |
+| 500: Internal Server Error | Something went wrong |
 
-{% swagger-response status="500: Internal Server Error" description="Something went wrong" %}
-```javascript
-{
-    error: "An internal error has occured. Please try again later",
-    description: "optional error description"
-}
-```
-{% endswagger-response %}
-{% endswagger %}
+## Get the next index in the Merkle tree
 
-{% swagger method="post" path="/proof_tx" baseUrl="http://relayer" summary="Calculate transaction proof" %}
-{% swagger-description %}
-Builds zkSNARK proof for the transaction based on public and secret transaction input calculated by a client.
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | /delta_index | Get the next index in the Merkle tree |
 
-**WARNING:** This is a debug method used to decrease client overhead. DO NOT use  in production, as the client should pass public and secret transactional data. This significantly decreases overall security!
-{% endswagger-description %}
+### Responses
 
-{% swagger-parameter in="body" name="pub" type="Dictionary" required="true" %}
-Public inputs for the circuit
-{% endswagger-parameter %}
+| Status | Description |
+|--------|-------------|
+| 200: OK | An integer value of the index |
+| 500: Internal Server Error | Something went wrong |
 
-{% swagger-parameter in="body" name="sec" type="Dictionary" required="true" %}
-Secret inputs for the circuit
-{% endswagger-parameter %}
+## Get current Merkle tree root and delta index
 
-{% swagger-response status="200: OK" description="Proof has been calculated successfully" %}
-```javascript
-{
-    proof // Transaction proof
-}
-```
-{% endswagger-response %}
+| Method | Path | Summary |
+|--------|------|---------|
+| GET | /info | Get current Merkle tree root and delta index |
 
-{% swagger-response status="400: Bad Request" description="Error in the public or secret input" %}
-```javascript
-{
-    error: "Error while parsing the input JSON",
-    description: "cannot find pub field"
-}
-```
-{% endswagger-response %}
+### Responses
 
-{% swagger-response status="500: Internal Server Error" description="Something went wrong" %}
-```javascript
-{
-    error: "An internal error has occured. Please try again later",
-    description: "optional error description"
-}
-```
-{% endswagger-response %}
-{% endswagger %}
-
-{% swagger method="get" path="/delta_index" baseUrl="http://relayer" summary="Get the next index in the Merkle tree" %}
-{% swagger-description %}
-
-{% endswagger-description %}
-
-{% swagger-response status="200: OK" description="An integer value of the index" %}
-0
-{% endswagger-response %}
-
-{% swagger-response status="500: Internal Server Error" description="Something went wrong" %}
-```javascript
-{
-    error: "An internal error has occured. Please try again later",
-    description: "optional error description"
-}
-```
-
-
-{% endswagger-response %}
-{% endswagger %}
-
-{% swagger method="get" path="/info" baseUrl="http://relayer" summary="Get current Merkle tree root and delta index" %}
-{% swagger-description %}
-
-{% endswagger-description %}
-
-{% swagger-response status="200: OK" description="Success" %}
-```javascript
-{
-    "root": "11469701942666298368112882412133877458305516134926649826543144744382391691533",
-    "deltaIndex": 0
-}
-```
-{% endswagger-response %}
-
-{% swagger-response status="500: Internal Server Error" description="Something went wrong" %}
-```javascript
-{
-    error: "An internal error has occured. Please try again later",
-    description: "optional error description"
-}
-```
-{% endswagger-response %}
-{% endswagger %}
-
+| Status | Description |
+|--------|-------------|
+| 200: OK | Success |
+| 500: Internal Server Error | Something went wrong |
