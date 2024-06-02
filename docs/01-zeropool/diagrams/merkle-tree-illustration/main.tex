@@ -1,0 +1,34 @@
+\documentclass[tikz,convert={outfile=\jobname.png}]{standalone}
+\usepackage{xcolor}
+\usetikzlibrary{graphs,graphdrawing,arrows.meta}
+\usegdlibrary{trees}
+\begin{document}
+\begin{tikzpicture}[
+  >=Stealth,
+  pth/.style={draw,rectangle,fill=green},
+  prf/.style={draw,rectangle,dashed,fill=yellow!20},
+  every node/.style={font={\ttfamily}}
+]
+\graph[binary tree layout]{
+  "3cf03f"[pth,pin={[pin edge={dashed}]60:{$H(\texttt{5e7bce}, \texttt{e07bbd})$}}] -> {   
+    "5e7bce"[pth] -> { 
+      3d3106[prf] -> { 
+        c52280[pin={[pin edge={dashed}]-60:{$H(v_0)$}}],
+        87428f[pin={[pin edge={dashed}]-60:{$H(v_1)$}}],
+      }, 
+    "e07bbd"[pth] -> { e47509[prf], "6631e5"[pth] }
+    },
+    7a0fde[prf,pin={[pin edge={dashed}]60:{$H(\texttt{60c4cf}, \texttt{9989b6})$}}] -> {
+      60c4cf -> {
+        25c725,
+        026382,
+      }, 
+      9989b6[pin={[pin edge={dashed}]60:{$H(\texttt{fd954f}, \texttt{72baaf})$}}] -> {
+        fd954f[pin={[pin edge={dashed}]-60:{$H(v_6)$}}],
+        72baaf[pin={[pin edge={dashed}]-60:{$H(v_7)$}}],
+      }
+    }
+  }
+};
+\end{tikzpicture}
+\end{document}

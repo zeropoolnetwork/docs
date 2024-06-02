@@ -1,0 +1,76 @@
+\documentclass[convert={outfile=\jobname.png}]{standalone}
+\usepackage{varwidth}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{tikz-cd}
+\usetikzlibrary{graphs,graphdrawing,arrows.meta}
+\usetikzlibrary{arrows.meta, positioning, quotes, calc, backgrounds, decorations.pathreplacing}
+\usetikzlibrary{cd}
+\usetikzlibrary{fit}
+\tikzset
+  { filled/.style={fill=white},
+    account/.style={draw,rectangle,minimum size=6mm,inner sep=2mm},
+    note/.style={draw,circle,minimum size=2mm},
+  }
+% \tikzcdset{column sep/normal=0.2cm}
+\begin{document}
+\begin{varwidth}{25cm}
+	\begin{tikzcd}[
+		% row sep=normal,
+		column sep=4mm,
+		ampersand replacement=\&,
+		nodes in empty cells,
+		execute at end picture={
+			\begin{scope}[on background layer]
+  			\node[rectangle,draw,dashed,fit=(lastTransLeft)(lastTransRight),rounded corners=0.2cm,inner sep=2mm,outer sep=1pt,pin={[font=\normalsize]90:{
+          Created by the transaction
+  			}}] (createdCaption) {};
+  			\node[below right=3cm and 1cm of consumedThree] (consumedCaption) {
+    			% \begin{minipage}{4cm}
+      			% Consumed by the transaction (can't be used again)
+      			Transaction
+    			% \end{minipage}
+  			};
+  			  \draw[<-,in=-80,out=180] (consumedCaption) to (consumedOne);
+  			  \draw[<-,in=-80,out=110] (consumedCaption) to (consumedTwo);
+  			  \draw[<-,in=-90,out=90] (consumedCaption) to (consumedThree);
+  			  \draw[->,in=-90,out=0] (consumedCaption) to (createdCaption);
+        \node[fit=(unconsumed),pin={[font=\normalsize]110:{
+          Left unconsumed
+  			}}] () {};
+			\end{scope}
+		}
+		]
+		% |[alias=a,note]| \&
+		\dots \&
+		|[account]| \&
+		|[note,fill=green,alias=consumedOne]| \&
+		|[note]| \&
+		|[note]| \&
+		|[account,fill=green,alias=consumedTwo]| \&
+		|[note]| \&
+		|[note]| \&
+		|[note]| \&
+		|[account]| \&
+		|[note,fill=green,alias=consumedThree]| \&
+		|[note,fill=green,alias=unconsumed]| \&
+		|[note]| \&
+		|[account,alias=lastTransLeft,fill=green]| \&
+		|[note,fill=red!30]| \&
+		|[note,fill=yellow!30]| \&
+		|[note,fill=blue!30,alias=lastTransRight]| \&
+		\\
+	\end{tikzcd}
+
+  \noindent
+  \begin{minipage}{15cm}
+    A transaction via which \colorbox{green}{Alice} creates three new
+    notes for \colorbox{red!30}{Bob}, \colorbox{yellow!30}{Carol},
+    \colorbox{blue!30}{Dave}. Doing that, she consumes her old account
+      \tikz[baseline=-0.5ex] \node[account,minimum size=2mm,fill=green] () {};
+    and two (but not all) of the notes
+      \tikz[baseline=-0.5ex] \node[note,minimum size=2mm,fill=green] () {};
+    she owned before. For this example, we use \texttt{OUTPUT} = 3.
+  \end{minipage}
+\end{varwidth}
+\end{document}
