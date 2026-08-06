@@ -101,7 +101,7 @@
 
 .hero__img-block::before {
   content: "";
-  background: url("/static/img/ZEROpool_NEW_logo_wh.png") center / contain no-repeat;
+  background: url("/img/ZEROpool_NEW_logo_wh.png") center / contain no-repeat;
   position: absolute;
   top: 0;
   right: 0;

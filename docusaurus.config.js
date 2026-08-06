@@ -10,7 +10,7 @@ import katex from 'rehype-katex';
 const config = {
   title: 'ZeroPool',
   tagline: 'privacy engine for blockchain',
-  url: 'https://your-docusaurus-test-site.com',
+  url: 'https://zeropool.network',
   baseUrl: '/',
   onBrokenLinks: 'log',
   onBrokenMarkdownLinks: 'warn',
